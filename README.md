@@ -4,15 +4,15 @@
 ### Team Name: Agile Sprinters
 
 ### Members: 
-1.	[Satish Kumar Reddy Madduri](satish_reddy@tamu.edu) 
-2.	[Pranav Anand Taukari](pranav.taukari@tamu.edu)  
-3.	[Vivek Vamsi Inala](vivekvamsi@tamu.edu)
-4.	[Ashutosh Chauhan](ashutosh@tamu.edu)
-5.	[Sagar Adhikari](sagar0073@tamu.edu) 
-6.	[Harshavardhan Manne](harshavardhan_manne@tamu.edu)
+1.	[Satish Kumar Reddy Madduri](mailto:satish_reddy@tamu.edu) 
+2.	[Pranav Anand Taukari](mailto:pranav.taukari@tamu.edu)  
+3.	[Vivek Vamsi Inala](mailto:vivekvamsi@tamu.edu)
+4.	[Ashutosh Chauhan](mailto:ashutosh@tamu.edu)
+5.	[Sagar Adhikari](mailto:sagar0073@tamu.edu) 
+6.	[Harshavardhan Manne](mailto:harshavardhan_manne@tamu.edu)
 
 ### Clients:
-1. [Dr. Korok Ray](korok@tamu.edu)
+1. [Dr. Korok Ray](mailto:korok@tamu.edu)
 
 ### Summary: 
 
