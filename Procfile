@@ -1,1 +1,1 @@
-web: gunicorn MIRC-Gradebook.wsgi:application --log-file -
+web: gunicorn gradebook_project.wsgi:application --log-file -
