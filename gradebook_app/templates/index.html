@@ -4,7 +4,7 @@
 <h1>MIRC Gradebook Login</h1>
 {% if user.is_authenticated %}
   <p>Welcome, You are logged in as {{ user.username }}</p>
-    <a href="http://127.0.0.1:8000/logout">Logout</a>
+    <a href="https://mirc-gradebook-prod.herokuapp.com/logout">Logout</a>
 {% else %}
   <a href="{% provider_login_url 'google' %}">Login With Google</a>
 {% endif %}
