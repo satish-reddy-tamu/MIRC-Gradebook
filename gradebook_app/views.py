@@ -18,7 +18,7 @@ def getAllUsers(request):
 def getUser(request, email):
     user = User.objects.get(email=email)
     print(user.email, user.type)
-    return user.email
+    return HttpResponse(f"{user.email}, {user.type}")
 
 def addUser(request, email):
     userTypes = [1, 2]
