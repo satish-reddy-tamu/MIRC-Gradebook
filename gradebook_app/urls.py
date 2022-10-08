@@ -10,4 +10,6 @@ urlpatterns = [
     path('get/<str:email>', views.getUser),
     path('add/<str:email>', views.addUser),
     path('getall', views.getAllUsers),
+    path('user', views.log_user),
+
 ]

@@ -1,3 +1,4 @@
+from allauth.socialaccount.models import SocialAccount
 from django.shortcuts import render
 import random
 
@@ -19,6 +20,11 @@ def getUser(request, email):
     user = User.objects.get(email=email)
     print(user.email, user.type)
     return HttpResponse(f"{user.email}, {user.type}")
+
+def log_user(request):
+    x = SocialAccount.objects.all()
+    print(x)
+    return HttpResponse(f"{x}")
 
 def addUser(request, email):
     userTypes = [1, 2]
