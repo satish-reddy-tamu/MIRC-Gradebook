@@ -9,6 +9,7 @@
 <h1>MIRC Gradebook</h1>
 {% if user.is_authenticated %}
     <p>Welcome, You are logged in as {{ user.email }}</p>
+    <a id="Ui" href="/get/{{ user.email }}" class="button">UI</a>
     <a id="logout" href="/accounts/logout" class="button">Logout</a>
 {% else %}
     <a id="google_login" href="/accounts/google/login" class="btn btn-success">

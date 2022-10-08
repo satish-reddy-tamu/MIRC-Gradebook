@@ -9,7 +9,6 @@ urlpatterns = [
     path('logout', LogoutView.as_view()),
     path('get/<str:email>', views.getUser),
     path('add/<str:email>', views.addUser),
-    path('getall', views.getAllUsers),
-    path('user', views.log_user),
-
+    path('getall', views.getAllUsers)
+    # path('user', views.log_user),
 ]
