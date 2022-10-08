@@ -4,11 +4,15 @@
 <h1>MIRC Gradebook Login</h1>
 {% if user.is_authenticated %}
     <p>Welcome, You are logged in as {{ user.username }}</p>
+    <div class="d-grid">
     <a id="logout" href="/accounts/logout" class="btn btn-success">Logout</a>
+    </div>>
 {% else %}
-  <a id="google_login" href="/accounts/google/login" class="btn btn-success">
+    <div class="d-grid">
+    <a id="google_login" href="/accounts/google/login" class="btn btn-primary">
         Sign in with Google
       </a>
+    </div>
 {% endif %}
 </body>
 </html>
