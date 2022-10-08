@@ -27,11 +27,5 @@ def login(request):
         return render(request, "student_home.html")
     elif user.type == 2:
         return render(request, "teacher_home.html")
-
-
-def getUser(request, email):
-    user = Profile.objects.get(email=email)
-    if user.type == 1:
-        return render(request, "student_home.html")
-    elif user.type == 2:
-        return render(request, "teacher_home.html")
+    else:
+        return render(request, "access_denied.html")
