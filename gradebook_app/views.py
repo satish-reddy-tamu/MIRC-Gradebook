@@ -22,10 +22,11 @@ def home(request):
 def login(request):
     user = User.objects.get(id=request.user.id)
     user_email = user.email
-    user = Profile.objects.get(email=user_email)
-    if user.type == 1:
-        return render(request, "student_home.html")
-    elif user.type == 2:
-        return render(request, "teacher_home.html")
-    else:
+    try:
+        profile = Profile.objects.get(email=user_email)
+        if profile.type == 1:
+            return render(request, "student_home.html")
+        elif profile.type == 2:
+            return render(request, "teacher_home.html")
+    except Profile.DoesNotExist:
         return render(request, "access_denied.html")
