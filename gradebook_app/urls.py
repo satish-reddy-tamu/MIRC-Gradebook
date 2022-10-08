@@ -1,10 +1,11 @@
 from django.urls import path, include
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 
 from . import views
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html')),
+    path('', RedirectView.as_view(url='/home')),
+    path('home', views.home),
     path('login', views.login),
     path('accounts/', include('allauth.urls')),
 ]
