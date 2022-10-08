@@ -22,7 +22,7 @@ def getUser(request, email):
     return HttpResponse(f"{user.email}, {user.type}")
 
 def log_user(request):
-    x = SocialAccount.objects.all()
+    x = SocialAccount.extra_data
     print(x)
     return HttpResponse(f"{x}")
 
