@@ -3,10 +3,12 @@
 <body>
 <h1>MIRC Gradebook Login</h1>
 {% if user.is_authenticated %}
-  <p>Welcome, You are logged in as {{ user.username }}</p>
-    <a href="https://mirc-gradebook-prod.herokuapp.com/logout">Logout</a>
+    <p>Welcome, You are logged in as {{ user.username }}</p>
+    <a id="logout" href="/accounts/logout" class="btn btn-success">Logout</a>
 {% else %}
-  <a href="{% provider_login_url 'google' %}">Login With Google</a>
+  <a id="google_login" href="/accounts/google/login" class="btn btn-success">
+        Sign in with Google
+      </a>
 {% endif %}
 </body>
 </html>
