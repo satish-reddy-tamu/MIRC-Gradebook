@@ -104,7 +104,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 5
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'gradebook_project.wsgi.application'
