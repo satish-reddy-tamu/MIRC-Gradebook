@@ -5,9 +5,16 @@ from django.http import HttpResponse
 
 from gradebook_app.models import Profile
 from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the gradebook app index.")
+
+def home(request):
+    user = User.objects.get(id=request.user.id)
+    if user.is_authenticated:
+        return redirect(login)
+    else:
+        return render(request, "home.html")
+
 
 def login(request):
     user = User.objects.get(id=request.user.id)
