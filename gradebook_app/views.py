@@ -9,10 +9,13 @@ from django.shortcuts import redirect
 
 
 def home(request):
-    user = User.objects.get(id=request.user.id)
-    if user.is_authenticated:
-        return redirect(login)
-    else:
+    try:
+        user = User.objects.get(id=request.user.id)
+        if user.is_authenticated:
+            return redirect(login)
+        else:
+            return render(request, "home.html")
+    except User.DoesNotExist:
         return render(request, "home.html")
 
 
