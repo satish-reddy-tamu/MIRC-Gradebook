@@ -1,22 +1,22 @@
 {% load socialaccount %}
 <html>
 <head>
-  <meta charset="UTF-8">
-    <title>MIRC login page UI</title>
+    <meta charset="UTF-8">
+    <title>MIRC login page</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../static/css/home.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css"/>
 
 </head>
 <body>
-{%include 'navbar.html'  %}
+{% include 'common/navbar.html' %}
 <form>
-<h3>GRADE BOOK</h3>
-
-    <button id= "google_login" onclick="location.href='/accounts/google/login'" type="button">
-         Sign in with Google</button>
-    </form>
+    <h3>GRADE BOOK</h3>
+    <button id="google_login" onclick="location.href='/accounts/google/login'" type="button">
+        Sign in with Google
+    </button>
+</form>
 </body>
 </html>

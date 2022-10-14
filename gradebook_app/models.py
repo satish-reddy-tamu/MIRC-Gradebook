@@ -1,6 +1,24 @@
+from enum import Enum
+
 from django.db import models
 
-# Create your models here.
+
+class ProfileType(Enum):
+    STUDENT = "student"
+    PROFESSOR = "professor"
+    STAFF = "staff"
+    ADMIN = "admin"
+
+    @classmethod
+    def choices(cls):
+        return tuple((i.value, i.value) for i in cls)
+
+    @classmethod
+    def get_all_profiles(cls):
+        return [i.value for i in cls]
+
+
 class Profile(models.Model):
-    email = models.CharField(max_length=200, unique=True)
-    type = models.IntegerField(default=0)
+    email = models.EmailField(max_length=254, unique=True)
+    name = models.CharField(max_length=50)
+    type = models.CharField(max_length=10, choices=ProfileType.choices())
