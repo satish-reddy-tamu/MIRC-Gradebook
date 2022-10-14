@@ -104,7 +104,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 Site.objects.clear_cache()
-SITE_ID = Site.objects.get_current()
+current_site = Site.objects.get_current()
+SITE_ID = 6
 
 LOGIN_REDIRECT_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
