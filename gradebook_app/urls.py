@@ -7,6 +7,6 @@ urlpatterns = [
     path('', RedirectView.as_view(url='home')),
     path('home', views.home),
     path('login', views.login),
-    path('contact', TemplateView.as_view(template_name="contact.html")),
+    path('contact', TemplateView.as_view(template_name="common/contact.html")),
     path('accounts/', include('allauth.urls'))
 ]
