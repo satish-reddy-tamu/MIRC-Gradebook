@@ -62,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'gradebook_project.middleware.DynamicSiteMiddleware'
 ]
 
 ROOT_URLCONF = 'gradebook_project.urls'
