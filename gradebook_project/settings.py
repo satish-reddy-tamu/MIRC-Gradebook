@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+
+from django.contrib.sites.models import Site
 from django.test.runner import DiscoverRunner
 import dj_database_url
 
@@ -101,8 +103,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
-SITE_ID = 4
+Site.objects.clear_cache()
+SITE_ID = Site.objects.get_current()
 
 LOGIN_REDIRECT_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
