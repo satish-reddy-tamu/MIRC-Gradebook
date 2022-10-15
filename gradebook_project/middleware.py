@@ -10,6 +10,7 @@ class DynamicSiteMiddleware(MiddlewareMixin):
     """
 
     def process_request(self, request):
+        Site.objects.clear_cache()
         try:
             current_site = Site.objects.get(domain=request.get_host())
         except Site.DoesNotExist:
