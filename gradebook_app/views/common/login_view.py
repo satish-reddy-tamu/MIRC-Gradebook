@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from gradebook_app.models import Profile, ProfileType
+from gradebook_app.models.profile_model import Profile, ProfileType
 
 
 def home(request):
