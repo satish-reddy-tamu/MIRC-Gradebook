@@ -26,4 +26,4 @@ def login(request):
         else:
             return render(request, "common/access_denied.html")
     except Profile.DoesNotExist:
-        return render(request, "common/access_denied.html")
+        return render(request, "common/profile_not_exists.html")
