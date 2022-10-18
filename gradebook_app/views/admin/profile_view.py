@@ -1,4 +1,7 @@
 from csv import DictReader
+
+from django.http import HttpResponse
+
 from gradebook_app.models.profile_model import Profile
 
 
@@ -14,8 +17,10 @@ def add_bulk_profiles(request):
             )
             profiles_list.append(profile)
         Profile.objects.bulk_create(profiles_list)
+        return HttpResponse("successful")
     except Exception as e:
         print(e)
+        return HttpResponse("failed"+str(e))
 
 
 def add_profile():
