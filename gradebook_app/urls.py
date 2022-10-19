@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
 
-from .views.common import login_view
+from gradebook_app.models.profile_model import ProfileForm
+from gradebook_app.views.common import login_view
 from gradebook_app.views.admin import profile_view
 
 urlpatterns = [
@@ -12,7 +13,9 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     # admin
-    path('admin/profiles', TemplateView.as_view(template_name="admin/profiles.html")),
-    path('admin/profiles/add_bulk', profile_view.add_bulk_profiles, name='add_bulk_profiles')
-
+    path('admin/profiles', profile_view.display_all_profiles, name='display_all_profiles'),
+    path('admin/profiles/add_bulk', profile_view.add_bulk_profiles, name='add_bulk_profiles'),
+    path('admin/profiles/add', profile_view.add_profile, name='add_profile'),
+    path('admin/profiles/update/<int:id>', profile_view.update_profile, name='update_profile'),
+    path('admin/profiles/delete/<int:id>', profile_view.delete_profile, name='delete_profile')
 ]
