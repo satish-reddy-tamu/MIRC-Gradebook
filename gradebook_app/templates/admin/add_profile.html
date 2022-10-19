@@ -1,0 +1,9 @@
+<form action="{% url "add_profile" %}" method="post">
+    {% csrf_token %}
+    {{ profile_form.as_table }}
+    <button class="btn btn-primary">
+        <span class="glyphicon" style="margin-right:5px;"></span>
+        Submit
+    </button>
+</form>
+
