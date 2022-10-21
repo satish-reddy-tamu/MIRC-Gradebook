@@ -4,6 +4,7 @@ from django.views.generic import TemplateView, RedirectView
 from gradebook_app.models.profile_model import ProfileForm
 from gradebook_app.views.common import login_view
 from gradebook_app.views.admin import profile_view
+from gradebook_app.views.admin import course_view
 
 urlpatterns = [
     path('', RedirectView.as_view(url='home')),
@@ -17,5 +18,7 @@ urlpatterns = [
     path('admin/profiles/add_bulk', profile_view.add_bulk_profiles, name='add_bulk_profiles'),
     path('admin/profiles/add', profile_view.add_profile, name='add_profile'),
     path('admin/profiles/update/<int:id>', profile_view.update_profile, name='update_profile'),
-    path('admin/profiles/delete/<int:id>', profile_view.delete_profile, name='delete_profile')
+    path('admin/profiles/delete/<int:id>', profile_view.delete_profile, name='delete_profile'),
+    path('admin/courses', course_view.display_all_courses, name='display_all_courses'),
+    path('admin/courses/add', course_view.add_course, name='add_course')
 ]
