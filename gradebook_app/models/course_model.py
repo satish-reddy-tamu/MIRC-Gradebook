@@ -37,6 +37,7 @@ class Course(models.Model):
     department = models.CharField(max_length=10, choices=Departments.choices())
     year = models.IntegerField(blank=True)
     semester = models.CharField(max_length=10, choices=Semesters.choices())
+    credits = models.IntegerField(default=0)
     
 class CourseForm(forms.ModelForm):
     class Meta:

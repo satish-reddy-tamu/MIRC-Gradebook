@@ -26,9 +26,19 @@ def add_course(request):
         print("invalid form")
 
 
-def update_course():
-    pass
+def update_course(request, id):
+    course = Course.objects.get(id=id)
+    if request.method == "POST":
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+        return redirect(display_all_courses)
+    else:
+        form = CourseForm(instance=course)
+        return render(request, 'admin/update_course.html', {'course_form': form, 'course': course})
 
 
-def delete_course():
-    pass
+def delete_course(request, id):
+    course = Course.objects.get(id=id)
+    course.delete()
+    return redirect(display_all_courses)
