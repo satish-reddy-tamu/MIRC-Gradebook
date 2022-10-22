@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
-# from django.contrib.sites.models import Site
 from django.test.runner import DiscoverRunner
 import dj_database_url
 
@@ -64,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'gradebook_project.middleware.DynamicSiteMiddleware'
 ]
 
 ROOT_URLCONF = 'gradebook_project.urls'
@@ -103,9 +102,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-# Site.objects.clear_cache()
-# current_site = Site.objects.get_current()
-SITE_ID = 6
+
+SITE_ID = 3
 
 LOGIN_REDIRECT_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
