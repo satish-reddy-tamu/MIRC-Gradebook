@@ -23,3 +23,9 @@ The main idea behind this project is to create an analytics-based prediction mod
 
 ### Iterations
 * [Iteration0](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i0.tar)
+
+### Setup:
+This project uses Django Framework with python.
+1. Git clone this repo.
+2. pip install -r requirements.txt
+3. python manage.py runserver -> to start the server locally.
