@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Departments(Enum):
     CSCE = "Computer Science and Engineering"
     ECE = "Electronics and Electrical Engineering"
@@ -11,6 +12,7 @@ class Departments(Enum):
     @classmethod
     def get_all_departments(cls):
         return [i.name for i in cls]
+
 
 class ProfileType(Enum):
     STUDENT = "student"
@@ -25,6 +27,7 @@ class ProfileType(Enum):
     @classmethod
     def get_all_profiles(cls):
         return [i.value for i in cls]
+
 
 class Semesters(Enum):
     Fall = "Fall"

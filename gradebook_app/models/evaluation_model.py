@@ -1,7 +1,10 @@
 import datetime
-from django.db import models
+
 from django import forms
+from django.db import models
+
 from gradebook_app.models.course_model import Course
+
 
 class Evaluation(models.Model):
     eval_id = models.CharField(max_length=10, unique=True)
@@ -12,7 +15,8 @@ class Evaluation(models.Model):
     max_score = models.IntegerField(blank=False)
     created_at = models.DateField(default=datetime.date.today)
     due_by = models.DateField(default=datetime.date.today)
-    
+
+
 class EvalulationForm(forms.ModelForm):
     class Meta:
         model = Evaluation
