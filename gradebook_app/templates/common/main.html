@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load socialaccount %}
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>MIRC login page</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/main.css"/>
+
 </head>
+
 <body>
-$END$
+
+<div class="tamu-logo">
+    <img src="https://shs.tamu.edu/wp-content/themes/tamudsa/images/tamu-logo-block.png" alt="Texas A&amp;M University" style="width: 85px; height: auto;">
+    <div class="tamu-text">
+    Texas A&amp;M University
+    </div>
+    <div class="tamu-title">
+    GRADEBOOK
+    </div>
+</div>
+
+<div class="topnav">
+<ul>
+  <a class="active" href="home">Home</a>
+    {% block nav_tiles  %}
+
+    {% endblock %}
+  <a href="contact">Contact</a>
+</ul>
+</div>
+
+ <img
+    class="demo-bg"
+    src="https://wallpaperaccess.com/full/5487854.jpg"
+    alt=""
+  >
+<form>
+    <h3>Howdy!!</h3>
+    <button id="google_login" onclick="location.href='/accounts/google/login'" type="button">
+
+        Sign in with Google Ashu
+    </button>
+
+</form>
+{% block content  %}
+
+{% endblock %}
 </body>
 </html>
