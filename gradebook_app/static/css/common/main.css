@@ -1,0 +1,114 @@
+/**,*/
+/**:before,*/
+/**:after{*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*.demo-bg{*/
+/*    opacity: 0.2*/
+/*}*/
+
+/*form{*/
+/*    height: 320px;*/
+/*    width: 500px;*/
+/*    background-color: #ffffff;*/
+/*    position: absolute;*/
+/*    transform: translate(-50%,-50%);*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    border-radius: 10px;*/
+/*    backdrop-filter: blur(10px);*/
+/*    border: 2px solid rgba(255,255,255,0.1);*/
+/*    box-shadow: 0 0 40px rgba(8,7,16,0.6);*/
+/*    padding: 50px 35px;*/
+
+/*}*/
+/*form *{*/
+/*    font-family: 'Poppins',sans-serif;*/
+/*    color: #260000;*/
+/*    letter-spacing: 0.5px;*/
+/*    outline: none;*/
+/*    border: none;*/
+/*}*/
+/*form h3{*/
+/*    font-size: 50px;*/
+/*    font-weight: 500;*/
+/*    line-height: 80px;*/
+/*    text-align: center;*/
+
+/*}*/
+
+/*label{*/
+/*    display: block;*/
+/*    margin-top: 30px;*/
+/*    font-size: 16px;*/
+/*    font-weight: 500;*/
+/*}*/
+
+/*::placeholder{*/
+/*    color: #e5e5e5;*/
+/*}*/
+/*button{*/
+/*    margin-top: 50px;*/
+/*    width: 100%;*/
+/*    background-color: #0066ff;*/
+/*    color: #ffffff;*/
+/*    padding: 15px 0;*/
+/*    font-size: 18px;*/
+/*    font-weight: 600;*/
+/*    border-radius: 5px;*/
+/*    cursor: pointer;*/
+/*}*/
+.tamu-logo {
+    background-color: #500000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+
+}
+.tamu-text {
+      font-size: 20px;
+    text-align: left;
+    font-family: "Times New Roman";
+    letter-spacing: 1px;
+    font-weight: 200;
+    padding-bottom: 30;
+    margin-bottom: 10;
+    color: #ffffff;
+    vertical-align: center;
+    -webkit-font-smoothing: antialiased
+}
+.tamu-title {
+    font-size: 40px;
+
+    color: #ffffff;
+    font-family: "Times New Roman";
+    -webkit-font-smoothing: antialiased;
+
+}
+.topnav {
+    background-color: #f5f5f5;
+    overflow: hidden;
+}
+
+
+.topnav a {
+  float: left;
+  color: #000000;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #1a0000;
+  color: white;
+}
+
+.topnav a.active {
+  background-color: #260000;
+  color: white;
+}

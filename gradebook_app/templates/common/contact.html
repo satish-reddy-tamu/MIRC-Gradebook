@@ -1,19 +1,14 @@
-{% load socialaccount %}
-<html>
-<head>
-  <meta charset="UTF-8">
-    <title>MIRC login page UI</title>
+{% extends 'common/main.html' %}
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css" />
+ {% block head_css  %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css"/>
+ {% endblock %}
 
-</head>
-<body>
- {%include 'common/navbar.html' %}
+
+
+{% block content %}
+
 <form>
-
 <h3>Contact Us</h3>
     <br>
     <h4>Application work is still under progress - All feedbacks are welcome at</h4>
@@ -21,8 +16,6 @@
     <br>
 <h4>Name: Ashutosh Chauhan</h4>
     <h4>Email: ashutosh@tamu.edu</h4>
-
-
     </form>
-</body>
-</html>
+
+{% endblock %}

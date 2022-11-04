@@ -2,17 +2,18 @@
 
 {% block title %}profile Records{% endblock title %}
 
-{% block content %}
+{% block base_content %}
     {% include 'admin/add_profile.html' %}
     {% include 'admin/add_bulk_profiles.html' %}
     <div class="col-md-12">
-
+        <br>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_profile_popup">
             Add Profile
         </button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_bulk_profiles_popup">
             Add Bulk Profiles
         </button>
+        <br><br>
         <div class="table-responsive">
             <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
                 <thead>
@@ -40,4 +41,4 @@
             </table>
         </div>
     </div>
-{% endblock content %}
+{% endblock %}

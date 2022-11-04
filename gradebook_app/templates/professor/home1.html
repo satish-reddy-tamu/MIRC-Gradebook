@@ -1,0 +1,28 @@
+{% extends 'common/main.html' %}
+
+ {% block nav_tiles  %}
+    <a href="/admin/courses">COURSES</a>
+     <a href="/admin/profiles">PROFILES</a>
+     <a href="/accounts/logout">LOGOUT</a>
+ {% endblock %}
+
+
+
+{% block content %}
+
+<form>
+    <h3>HOWDY Admin!!</h3>
+    <button id="admin_get_started" onclick="location.href='/admin/courses'" type="button">
+        Get Started
+    </button>
+</form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
