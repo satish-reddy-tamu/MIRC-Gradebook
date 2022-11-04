@@ -1,5 +1,9 @@
 {% extends 'common/main.html' %}
 
+{% block head_css  %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/admin/home.css"/>
+ {% endblock %}
+
  {% block nav_tiles  %}
     <a href="/admin/courses">Courses</a>
      <a href="/admin/profiles">Profiles</a>
@@ -9,7 +13,11 @@
 
 
 {% block content %}
-
+ <img
+    class="demo-bg"
+    src="https://wallpaperaccess.com/full/5487854.jpg"
+    alt=""
+  >
 <form>
     <h3>HOWDY Admin!!</h3>
     <button id="admin_get_started" onclick="location.href='/admin/courses'" type="button">

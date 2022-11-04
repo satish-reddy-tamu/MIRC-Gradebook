@@ -1,5 +1,10 @@
 {% extends 'common/main.html' %}
 
+
+ {% block head_css  %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css"/>
+ {% endblock %}
+
  {% block nav_tiles  %}
     <a href="home">PlaceHolder</a>
  {% endblock %}
@@ -7,7 +12,11 @@
 
 
 {% block content %}
-
+ <img
+    class="demo-bg"
+    src="https://wallpaperaccess.com/full/5487854.jpg"
+    alt=""
+  >
 <form>
     <h3>HOWDY !!</h3>
     <button id="google_login" onclick="location.href='/accounts/google/login'" type="button">

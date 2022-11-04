@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <title>MIRC login page</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+{#    <link rel="preconnect" href="https://fonts.gstatic.com">#}
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">#}
+{#    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">#}
     <link rel="stylesheet" type="text/css" href="../../static/css/common/main.css"/>
+    {% block head_css  %}
+
+    {% endblock %}
 
 </head>
 
@@ -20,28 +23,29 @@
     Texas A&amp;M University
     </div>
     <div class="tamu-title">
-    GRADEBOOK
+       GRADEBOOK
     </div>
 </div>
 
 <div class="topnav">
 <ul>
-  <a class="active" href="home">Home</a>
+  <a class="active" href="/home">Home</a>
     {% block nav_tiles  %}
 
     {% endblock %}
-  <a href="contact">Contact</a>
+  <a href="/contact">Contact</a>
 </ul>
 </div>
 
- <img
-    class="demo-bg"
-    src="https://wallpaperaccess.com/full/5487854.jpg"
-    alt=""
-  >
+{# <img#}
+{#    class="demo-bg"#}
+{#    src="https://wallpaperaccess.com/full/5487854.jpg"#}
+{#    alt=""#}
+{#  >#}
 
 {% block content  %}
 
 {% endblock %}
+
 </body>
 </html>

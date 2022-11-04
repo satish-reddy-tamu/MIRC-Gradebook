@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'common/main.html' %}
+
+ {% block head_css  %}
     <meta charset="UTF-8">
     {% load static %}
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css"/>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
@@ -19,10 +20,20 @@
             );
         });
     </script>
-</head>
-<body>
-{% block nav_bar  %}{% endblock %}
-{% block content %}{% endblock %}
+ {% endblock %}
 
-</body>
-</html>
+ {% block nav_tiles  %}
+    <a href="/admin/courses">Courses</a>
+     <a href="/admin/profiles">Profiles</a>
+     <a href="/accounts/logout">Logout</a>
+ {% endblock %}
+
+
+
+{% block content %}
+
+
+{% block base_content %}{% endblock %}
+
+
+{% endblock %}
