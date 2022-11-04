@@ -14,6 +14,7 @@
 
 {% block content %}
     {% include 'admin/add_course.html' %}
+    {% include 'admin/assign_course_to_profile.html' %}
     <div class="col-md-12">
         <br>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_course_popup">
@@ -49,6 +50,7 @@
                         <td>{{ course.credits }}</td>
                         <td><a href="/admin/courses/update/{{ course.id }}" class="btn btn-primary">Edit</a></td>
                         <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#assign_course_to_profile">Add Profile</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

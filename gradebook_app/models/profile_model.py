@@ -17,8 +17,18 @@ class Profile(models.Model):
     date_added = models.DateField(default=datetime.date.today)
     courses = models.ManyToManyField(Course, related_name='profiles')
 
+    def __str__(self):
+        return self.first_name[0:7] + f" ({self.email})"
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['email', 'type', 'first_name', 'last_name', 'department', 'phone', 'date_added']
+
+
+class AllocateCourseToStudentsForm(forms.Form):
+    students = forms.ModelChoiceField(queryset=Profile.objects.filter(type=ProfileType.STUDENT.value).all())
+    students_csv = forms.FileField()
+    professors = forms.ModelChoiceField(queryset=Profile.objects.filter(type=ProfileType.PROFESSOR.value).all())
+    professors_csv = forms.FileField()
