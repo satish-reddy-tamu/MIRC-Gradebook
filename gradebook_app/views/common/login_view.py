@@ -2,7 +2,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
 
+from gradebook_app.models import Course
 from gradebook_app.models.profile_model import Profile, ProfileType
+from gradebook_app.views.professor.dashboard_view import professor_dashboard
 
 
 def home(request):
@@ -22,7 +24,10 @@ def login(request):
     try:
         profile = Profile.objects.get(email=user_email)
         if profile.type in ProfileType.get_all_profiles():
-            return render(request, f"{profile.type}/home.html")
+            if profile.type == ProfileType.PROFESSOR.value:
+                return professor_dashboard(request, profile)
+            else:
+                return render(request, f"{profile.type}/home.html")
         else:
             return render(request, "common/access_denied.html")
     except Profile.DoesNotExist:

@@ -1,45 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewreport" content="width=device-width, initial-scale=1.0">
-	<title>
-		html css and bootstrap 4 simple landing page
-	</title>
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="../../static/css/admin/home.css" />
-</head>
-<body>
-	<div class="container-fluid banner">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-md">
-					<div class="navbar-brand">MIRC-GRADEBOOK</div>
-					<ul class="nav">
-						<li class="nav-item">
-							<a class="nav-link" href="#">HOME</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/admin/courses">COURSES</a>
-						</li>
-                        <li class="nav-item">
-							<a class="nav-link" href="/admin/profiles">PROFILES</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/accounts/logout">LOGOUT</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div class="col-md-8 offset-md-2 info">
-				<h1 class="text-center">HELLO ADMIN</h1>
-				<p class="text-center">
+{% extends 'common/base.html' %}
+{% block head_css %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css"/>
+{% endblock %}
+{% block nav_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/courses">Courses</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/profiles">Profiles</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+    </li>
+{% endblock %}
 
-				</p>
-				<a href="#" class="btn btn-md text-center">GET STARTED</a>
-			</div>
-		</div>
-	</div>
-</body>
-</html>
+{% block content %}
+    <form>
+        <h3>HOWDY ADMIN</h3>
+    </form>
+{% endblock %}
+
