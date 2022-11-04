@@ -7,12 +7,14 @@ from django.shortcuts import redirect, render
 from gradebook_app.models.course_model import Course, CourseForm
 from gradebook_app.models.Enrollment import EnrollmentForm, Enrollment
 from gradebook_app.models.profile_model import Profile
+from gradebook_app.models.profile_model import AllocateCourseToStudentsForm
 
 def display_all_courses(request):
     courses = Course.objects.all()
     return render(request, 'admin/courses.html', {
         'courses': courses,
-        'add_course_form': CourseForm()
+        'add_course_form': CourseForm(),
+        'assign_course_to_profile_form': AllocateCourseToStudentsForm()
     })
 
 
