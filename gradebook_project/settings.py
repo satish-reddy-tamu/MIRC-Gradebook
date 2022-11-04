@@ -94,7 +94,7 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
-            'profile',
+            # 'profile',
             'email',
         ],
         'AUTH_PARAMS': {
