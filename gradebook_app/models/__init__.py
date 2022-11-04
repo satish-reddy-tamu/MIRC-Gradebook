@@ -4,3 +4,4 @@ from gradebook_app.models.professor_model import Professor
 from gradebook_app.models.profile_model import Profile
 # from gradebook_app.models.student_eval_model import StudentEval
 from gradebook_app.models.student_model import Student
+from gradebook_app.models.Enrollment import Enrollment

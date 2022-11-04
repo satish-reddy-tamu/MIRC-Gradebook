@@ -29,7 +29,7 @@
                     <tr>
                         <td><input type="checkbox" class="checkthis"/></td>
                         <td>{{ course.id }}</td>
-                        <td>{{ course.course_id }}</td>
+                        <td>{{ course.course_code }}</td>
                         <td>{{ course.name }}</td>
                         <td>{{ course.department }}</td>
                         <td>{{ course.description }}</td>
@@ -38,6 +38,7 @@
                         <td>{{ course.credits }}</td>
                         <td><a href="/admin/courses/update/{{ course.id }}" class="btn btn-primary">Edit</a></td>
                         <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="/admin/courses/addStudents/{{ course.id }}" class="btn btn-primary">Add students</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
