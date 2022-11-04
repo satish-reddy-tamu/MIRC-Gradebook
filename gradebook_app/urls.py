@@ -1,10 +1,10 @@
 from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
 
-from gradebook_app.models.profile_model import ProfileForm
-from gradebook_app.views.common import login_view
-from gradebook_app.views.admin import profile_view
 from gradebook_app.views.admin import course_view
+from gradebook_app.views.admin import profile_view
+from gradebook_app.views.common import login_view
+from gradebook_app.views.professor import dashboard_view
 
 urlpatterns = [
     path('', RedirectView.as_view(url='home')),
@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/courses/add', course_view.add_course, name='add_course'),
     path('admin/courses/update/<int:id>', course_view.update_course, name='update_course'),
     path('admin/courses/delete/<int:id>', course_view.delete_course, name='delete_course'),
+    path('professor/course/<int:id>', dashboard_view.view_course_details, name='view_course_details'),
+    path('professor/course/<int:id>/students', dashboard_view.view_students_list, name='view_students_list')
 ]

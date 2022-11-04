@@ -1,42 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewreport" content="width=device-width, initial-scale=1.0">
-	<title>
-		html css and bootstrap 4 simple landing page
-	</title>
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="../../static/css/professor/home.css" />
-</head>
-<body>
-	<div class="container-fluid banner">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-md">
-					<div class="navbar-brand">MIRC-GRADEBOOK</div>
-					<ul class="nav">
-						<li class="nav-item">
-							<a class="nav-link" href="#">HOME</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">COURSES</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/accounts/logout">LOGOUT</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-			<div class="col-md-8 offset-md-2 info">
-				<h1 class="text-center">HELLO PROFESSOR</h1>
-				<p class="text-center">
+{% extends 'common/base.html' %}
 
-				</p>
-				<a href="#" class="btn btn-md text-center">GET STARTED</a>
-			</div>
-		</div>
-	</div>
-</body>
-</html>
+{% block nav_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="row">
+        {% for course in courses %}
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        {{ course.course_code }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.name }}</h5>
+                        <p class="card-text">{{ course.description }}</p>
+                        <a href="/professor/course/{{ course.id }}" class="btn btn-primary">Go to Course</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <br>
+{% endblock %}
+
+

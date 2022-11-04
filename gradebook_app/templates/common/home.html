@@ -1,22 +1,31 @@
-{% load socialaccount %}
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>MIRC login page</title>
+{% extends 'common/base.html' %}
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+ {% block head_css  %}
     <link rel="stylesheet" type="text/css" href="../../static/css/common/home.css"/>
+ {% endblock %}
 
-</head>
-<body>
-{% include 'common/navbar.html' %}
+ {% block nav_links  %}
+     <li class="nav-item">
+        <a class="nav-link" href="#">Contacts</a>
+    </li>
+     <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+ {% endblock %}
+
+
+
+{% block content %}
+ <img
+    class="demo-bg"
+    src="https://wallpaperaccess.com/full/5487854.jpg"
+    alt=""
+  >
 <form>
-    <h3>GRADE BOOK</h3>
+    <h3>HOWDY !!</h3>
     <button id="google_login" onclick="location.href='/accounts/google/login'" type="button">
         Sign in with Google
     </button>
 </form>
-</body>
-</html>
+{% endblock %}
