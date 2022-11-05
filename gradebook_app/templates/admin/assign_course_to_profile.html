@@ -1,16 +1,16 @@
-<form action="{% url 'add_course'%}" method="post">
+<form action="{% url 'add_profile'%}" method="post">
     {% csrf_token %}
-    <div class="modal fade" id="add_course_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="assign_course_to_profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Course</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Profile</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table>
-                        {{ add_course_form }}
+                        {{ assign_course_to_profile_form }}
                     </table>
                 </div>
                 <div class="modal-footer">

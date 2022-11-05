@@ -1,0 +1,11 @@
+<form action="/admin/courses/enroll/{{ course_id }}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ enrollment_form.as_table }}
+    </table>
+    
+    <button class="btn btn-primary">
+        <span class="glyphicon" style="margin-right:5px;"></span>
+        Submit
+    </button>
+</form>
