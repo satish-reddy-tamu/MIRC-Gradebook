@@ -50,7 +50,7 @@
                         <td>{{ course.credits }}</td>
                         <td><a href="/admin/courses/update/{{ course.id }}" class="btn btn-primary">Edit</a></td>
                         <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger">Delete</a></td>
-                        <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#assign_course_to_profile">Add Profile</a></td>
+                        <td><a href="/admin/courses/enroll/{{ course.id }}" class="btn btn-primary">Enroll profiles</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
