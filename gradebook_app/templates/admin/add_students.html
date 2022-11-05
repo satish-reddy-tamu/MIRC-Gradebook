@@ -1,4 +1,4 @@
-<form action="/admin/courses/addStudents/{{ course_id }}" method="post" enctype="multipart/form-data">
+<form action="/admin/courses/enroll/{{ course_id }}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
         {{ enrollment_form.as_table }}

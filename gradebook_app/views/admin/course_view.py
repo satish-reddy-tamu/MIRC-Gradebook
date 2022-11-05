@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from gradebook_app.models.course_model import Course, CourseForm
-from gradebook_app.models.Enrollment import EnrollmentForm, Enrollment
 from gradebook_app.models.profile_model import Profile
 from gradebook_app.models.profile_model import AllocateCourseToStudentsForm
 
@@ -50,12 +49,21 @@ def delete_course(request, id):
 
 def getStudentList(form, request):
     students = []
-    studentEmail = form.cleaned_data['student_email']
+    professors = []
+    studentEmail = ''
+    professorEmail = ''
+    if form.cleaned_data['students']:
+        studentEmail = form.cleaned_data['students'].email
     if studentEmail != '':
         students = [studentEmail]
+
+    if form.cleaned_data['professors']:
+        professorEmail = form.cleaned_data['professors'].email
+    if professorEmail != '':
+        professors = [professorEmail]
     
     try:
-        file = request.FILES['file']
+        file = request.FILES['students_csv']
         file_data = file.read().decode("utf-8")
         lines = file_data.split("\n")
         for line in lines:	
@@ -64,29 +72,36 @@ def getStudentList(form, request):
                 students.append(str(line))
     except:
         print("file upload error")
-    print(students)
-    return students
+        
+    try:
+        file = request.FILES['professors_csv']
+        file_data = file.read().decode("utf-8")
+        lines = file_data.split("\n")
+        for line in lines:	
+            line = line.rstrip()
+            if line != '':
+                students.append(str(line))
+    except:
+        print("file upload error")
+    print(students+professors)
+    return students+professors
 
 def enrollStudents(course, students):
     for student in students:
         try:
             profile = Profile.objects.get(email=student)
             # print("ex", Enrollment.objects.filter(profile=profile, course=course).exists())
-            if not Enrollment.objects.filter(profile=profile, course=course).exists():
-                enrollment = Enrollment(profile=profile, course=course)
-                enrollment.save()
-            else:
-                print("exists")
+            profile.courses.add(course)
+            profile.save()
         except Exception as e: 
             print(e)
             print("save failed")
 
-
-def add_students(request, id):
+def enroll(request, id):
     course = Course.objects.get(id=id)
     print(course.id)
     if request.method == "POST":
-        form = EnrollmentForm(request.POST, request.FILES)
+        form = AllocateCourseToStudentsForm(request.POST, request.FILES)
         if form.is_valid():
             students = getStudentList(form, request)
             try:
@@ -98,5 +113,5 @@ def add_students(request, id):
         else:
             print("invalid form")
     else:
-        f = EnrollmentForm(auto_id=False)
+        f = AllocateCourseToStudentsForm(auto_id=False)
         return render(request, 'admin/add_students.html', {'enrollment_form': f, 'course_id': course.id})

@@ -28,7 +28,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class AllocateCourseToStudentsForm(forms.Form):
-    students = forms.ModelChoiceField(queryset=Profile.objects.filter(type=ProfileType.STUDENT.value).all())
-    students_csv = forms.FileField()
-    professors = forms.ModelChoiceField(queryset=Profile.objects.filter(type=ProfileType.PROFESSOR.value).all())
-    professors_csv = forms.FileField()
+    students = forms.ModelChoiceField(required=False, queryset=Profile.objects.filter(type=ProfileType.STUDENT.value).all())
+    students_csv = forms.FileField(required=False)
+    professors = forms.ModelChoiceField(required=False, queryset=Profile.objects.filter(type=ProfileType.PROFESSOR.value).all())
+    professors_csv = forms.FileField(required=False)
