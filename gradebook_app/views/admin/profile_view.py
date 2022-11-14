@@ -5,13 +5,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from gradebook_app.models.profile_model import Profile, ProfileForm, Course, AllocateCourseToStudentsForm
-from gradebook_app.models.course_model import Course, CourseForm
+from gradebook_app.models.course_model import Course, AdminCourseForm
 
 def display_all_courses(request):
     courses = Course.objects.all()
     return render(request, 'admin/courses.html', {
         'courses': courses,
-        'add_course_form': CourseForm(),
+        'add_course_form': AdminCourseForm(),
         'assign_course_to_profile_form': AllocateCourseToStudentsForm()
     })
 
