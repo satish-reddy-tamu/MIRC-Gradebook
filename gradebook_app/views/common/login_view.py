@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
-
-from gradebook_app.models import Course
+from django.contrib import messages
 from gradebook_app.models.profile_model import Profile, ProfileType
 from gradebook_app.views.professor.dashboard_view import professor_dashboard
 
@@ -21,8 +20,10 @@ def home(request):
 def login(request):
     user = User.objects.get(id=request.user.id)
     user_email = user.email
+
     try:
         profile = Profile.objects.get(email=user_email)
+        messages.success(request, f'Hello world {user_email}')
         if profile.type in ProfileType.get_all_profiles():
             if profile.type == ProfileType.PROFESSOR.value:
                 return professor_dashboard(request, profile)
@@ -31,4 +32,5 @@ def login(request):
         else:
             return render(request, "common/access_denied.html")
     except Profile.DoesNotExist:
+        messages.error(request, f'{user_email} dosenot exist')
         return render(request, "common/profile_not_exists.html")
