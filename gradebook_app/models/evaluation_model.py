@@ -12,10 +12,18 @@ class Evaluation(models.Model):
     eval_type = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)])
-    max_marks = models.IntegerField()
+    max_marks = models.FloatField()
 
 
 class EvaluationForm(forms.ModelForm):
     class Meta:
         model = Evaluation
-        fields = '__all__'
+        fields = ['name', 'eval_type', 'weight', 'max_marks']
+
+class GradeFunctionForm(forms.Form):
+    A = forms.IntegerField()
+    B = forms.IntegerField()
+    C = forms.IntegerField()
+    D = forms.IntegerField()
+    E = forms.IntegerField()
+    F = forms.IntegerField()
