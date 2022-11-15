@@ -21,3 +21,4 @@ sqlparse==0.4.3
 types-cryptography==3.3.23
 urllib3==1.26.12
 whitenoise==6.2.0
+pandas==1.5.1
