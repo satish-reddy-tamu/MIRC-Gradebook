@@ -1,7 +1,11 @@
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import pandas as pd
 
-from gradebook_app.models import Course, Evaluation
+from gradebook_app.models import Course
+from gradebook_app.models import Marks
+from gradebook_app.models import Evaluation
 from gradebook_app.models.common_classes import ProfileType
 from gradebook_app.models.evaluation_model import EvaluationForm, GradeFunctionForm
 
@@ -17,13 +21,35 @@ def view_course_details(request, id):
 
 def view_students_list(request, id):
     students = []
+    marks = []
+    evals = []
+    data = {}
+    evalIDs = []
+    df = pd.DataFrame({})
     try:
         students = Course.objects.get(id=id).profiles.filter(type=ProfileType.STUDENT.value).all()
+        # for obj in Evaluation.objects.all():
+        #     print(obj.name)
+        marks = Marks.objects.filter(course_id = id).all()
+        evals = Evaluation.objects.filter(course_id = id).all()
+        evalIDs = [ev.id for ev in evals]
+        for student in students:
+            print(student.id)
+            student_marks = []
+            for evid in evalIDs:
+                student_marks.append(marks.filter(evaluation_id = evid, profile_id = student.id).values('marks')) #change filter
+            data[student.id] = student_marks
+        df = pd.DataFrame(data,index = evalIDs)
+        # print(student.id for student in students)
+        print(df[3][1][0]['marks'])
     except Exception as e:
         print(e)
     return render(request, 'professor/students_list.html', {
         'students': students,
-        'course_id': id
+        'course_id': id,
+        'evals' : evals,
+        'evalIDs' : evalIDs,
+        'df' : df
     })
 
 
