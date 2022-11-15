@@ -30,7 +30,7 @@ def view_students_list(request, id):
 def evaluations_list(request, id):
     evaluations = []
     try:
-        evaluations = Evaluation.objects.filter(course_id_id=id).all()
+        evaluations = Evaluation.objects.filter(course_id=id).all()
     except Exception as e:
         print(e)
     return render(request, 'professor/evaluations_list.html', {
@@ -105,7 +105,7 @@ def add_course_configuration(request, id):
             eval_type=eval.eval_type,
             weight=eval.weight,
             max_marks=eval.max_marks,
-            course_id_id=id
+            course_id=id
         )
         )
     print(evaluation_objs)

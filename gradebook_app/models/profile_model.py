@@ -23,8 +23,8 @@ class Profile(models.Model):
 
 
 class ProfileCourse(models.Model):
-    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     score = models.FloatField(default=0)
     grade = models.CharField(max_length=1, choices=Grades.choices())
 
