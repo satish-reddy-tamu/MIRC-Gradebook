@@ -24,6 +24,14 @@ urlpatterns = [
     path('admin/courses/update/<int:id>', course_view.update_course, name='update_course'),
     path('admin/courses/delete/<int:id>', course_view.delete_course, name='delete_course'),
     path('professor/course/<int:id>', dashboard_view.view_course_details, name='view_course_details'),
+    path('professor/course/<int:id>/configure', dashboard_view.configure_course, name='configure_course'),
+    path('professor/course/<int:id>/configure/submit', dashboard_view.add_course_configuration, name='add_course_configuration'),
     path('professor/course/<int:id>/students', dashboard_view.view_students_list, name='view_students_list'),
+    path('professor/course/<int:id>/evaluations', dashboard_view.evaluations_list, name='evaluations_list'),
+
+    path('professor/course/<int:id>/evaluations/add', dashboard_view.add_evaluation, name='add_evaluation'),
+    path('professor/course/<int:id>/evaluations/add_grade_function', dashboard_view.add_grade_function, name='add_grade_function'),
+    path('professor/course/<int:course_id>/evaluations/delete/<int:eval_id>', dashboard_view.delete_evaluation, name='delete_evaluation'),
+
     path('admin/courses/enroll/<int:id>', course_view.enroll, name='enroll'),
 ]

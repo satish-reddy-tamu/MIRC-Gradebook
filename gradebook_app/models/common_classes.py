@@ -41,3 +41,20 @@ class Semesters(Enum):
     @classmethod
     def get_all_semesters(cls):
         return [i.name for i in cls]
+
+
+class Grades(Enum):
+    A = "A"
+    B = "B"
+    C = "C"
+    D = "D"
+    E = "E"
+    F = "F"
+
+    @classmethod
+    def choices(cls):
+        return tuple((i.name, i.value) for i in cls)
+
+    @classmethod
+    def get_all_grades(cls):
+        return [i.name for i in cls]
