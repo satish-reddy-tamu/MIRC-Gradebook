@@ -50,7 +50,7 @@ def update_course(request, id):
                 form = AdminCourseForm(request.POST, instance=course)
                 if form.is_valid():
                     form.save()
-                    messages.success(request, "Course Updated successfully")
+                    messages.success(request, f"Course ID: {id} Updated successfully")
                     return JsonResponse({"form_is_valid": True})
                 else:
                     html_form = render_to_string("admin/course_form.html",
@@ -62,7 +62,7 @@ def update_course(request, id):
                                              {"course_form": form, "update": True, "course_id": id}, request)
                 return JsonResponse({"html_form": html_form})
     except Exception as e:
-        messages.error(request, "Course Update failed due to: " + str(e))
+        messages.error(request, f"Course ID: {id} Update failed due to: " + str(e))
         return JsonResponse({})
 
 
@@ -70,9 +70,9 @@ def delete_course(request, id):
     try:
         course = Course.objects.get(id=id)
         course.delete()
-        messages.success(request, "Course Deleted Successfully")
+        messages.success(request, f"Course ID: {id} Deleted Successfully")
     except Exception as e:
-        messages.error(request, "Course deletion failed due to: " + str(e))
+        messages.error(request, f"Course ID: {id} deletion failed due to: " + str(e))
     finally:
         return redirect(display_all_courses)
 
@@ -130,20 +130,25 @@ def enrollStudents(course, students):
 
 
 def enroll(request, id):
-    course = Course.objects.get(id=id)
-    print(course.id)
-    if request.method == "POST":
-        form = AllocateCourseToStudentsForm(request.POST, request.FILES)
-        if form.is_valid():
-            students = getStudentList(form, request)
-            try:
-                enrollStudents(course, students)
-                return redirect(display_all_courses)
-            except Exception as e:
-                print(e)
-                print("save failed")
-        else:
-            print("invalid form")
-    else:
-        f = AllocateCourseToStudentsForm(auto_id=False)
-        return render(request, 'admin/add_students.html', {'enrollment_form': f, 'course_id': course.id})
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            course = Course.objects.get(id=id)
+            if request.method == "POST":
+                form = AllocateCourseToStudentsForm(request.POST, request.FILES)
+                if form.is_valid():
+                    students = getStudentList(form, request)
+                    enrollStudents(course, students)
+                    messages.success(request, f"Enrolled Profiles for course id: {id} successfully")
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("admin/course_form.html",
+                                                 {"course_form": form, "course_id": id}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = AllocateCourseToStudentsForm()
+                html_form = render_to_string("admin/course_form.html",
+                                             {"course_form": form, "course_id": id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, f"Profiles Enrollment for course id: {id} failed due to: " + str(e))
+        return JsonResponse({})

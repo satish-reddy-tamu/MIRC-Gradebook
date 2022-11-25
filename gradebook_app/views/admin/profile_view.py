@@ -73,7 +73,7 @@ def update_profile(request, id):
                 form = ProfileForm(request.POST, instance=profile)
                 if form.is_valid():
                     form.save()
-                    messages.success(request, "Profile Updated successfully")
+                    messages.success(request, f"Profile ID: {id} Updated successfully")
                     return JsonResponse({"form_is_valid": True})
                 else:
                     html_form = render_to_string("admin/profile_form.html",
@@ -85,7 +85,7 @@ def update_profile(request, id):
                                              {"profile_form": form, "update": True, "profile_id": id}, request)
                 return JsonResponse({"html_form": html_form})
     except Exception as e:
-        messages.error(request, "Profile Update failed due to: " + str(e))
+        messages.error(request, f"Profile ID: {id} Update failed due to: " + str(e))
         return JsonResponse({})
 
 
@@ -93,8 +93,8 @@ def delete_profile(request, id):
     try:
         profile = Profile.objects.get(id=id)
         profile.delete()
-        messages.success(request, "Profile Deleted Successfully")
+        messages.success(request, f"Profile ID: {id} Deleted Successfully")
     except Exception as e:
-        messages.error(request, "Profile Deletion failed due to: " + str(e))
+        messages.error(request, f"Profile ID: {id} Deletion failed due to: " + str(e))
     finally:
         return redirect(display_all_profiles)

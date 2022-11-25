@@ -41,6 +41,7 @@
         };
         $("body").on('click', '#add_course_btn', loadForm);
         $("body").on('click', '#update_course_btn', loadForm);
+        $("body").on('click', '#enroll_profiles_btn', loadForm);
         $("body").on('submit', '#course_form', saveForm);
     }) /* document ready */
 

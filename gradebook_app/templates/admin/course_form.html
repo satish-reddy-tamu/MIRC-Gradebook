@@ -3,6 +3,8 @@
             action="{% url 'add_course' %}"
         {% elif update %}
             action="{% url 'update_course' course_id %}"
+        {% else %}
+            action="{% url 'enroll' course_id %}"
         {% endif %}
             id="course_form" method="post">
     {% csrf_token %}
@@ -16,6 +18,8 @@
                             Add Course
                         {% elif update %}
                             Update Course
+                        {% else %}
+                            Enroll Profiles
                         {% endif %}
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -32,7 +36,10 @@
                             Add
                         {% elif update %}
                             Update
-                        {% endif %}</button>
+                        {% else %}
+                            Enroll
+                        {% endif %}
+                    </button>
                 </div>
             </div>
         </div>
