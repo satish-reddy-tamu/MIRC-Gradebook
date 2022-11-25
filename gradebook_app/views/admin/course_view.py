@@ -1,7 +1,7 @@
-import json
-
 from django.contrib import messages
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 
 from gradebook_app.models.course_model import Course, AdminCourseForm
 from gradebook_app.models.profile_model import AllocateCourseToStudentsForm
@@ -9,42 +9,61 @@ from gradebook_app.models.profile_model import Profile
 
 
 def display_all_courses(request):
-    courses = Course.objects.all()
-    return render(request, 'admin/courses.html', {
-        'courses': courses,
-        'add_course_form': AdminCourseForm(),
-        'assign_course_to_profile_form': AllocateCourseToStudentsForm()
-    })
+    try:
+        courses = Course.objects.all()
+        return render(request, 'admin/courses.html', {
+            'courses': courses,
+            'course_form': AdminCourseForm(),
+            'assign_course_to_profile_form': AllocateCourseToStudentsForm()
+        })
+    except Exception as e:
+        messages.error(request, "Error loading courses: " + str(e))
+        return HttpResponse("Error loading courses: " + str(e))
 
 
 def add_course(request):
     try:
-        form = AdminCourseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Course Added successfully")
-        else:
-            for key, value in json.loads(form.errors.as_json()).items():
-                message = f"{key}: "
-                for val in value:
-                    message += val['message']
-                messages.error(request, message)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            if request.method == "POST":
+                form = AdminCourseForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Course Added successfully")
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("admin/course_form.html", {"course_form": form, "add": True}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = AdminCourseForm()
+                html_form = render_to_string("admin/course_form.html", {"course_form": form, "add": True}, request)
+                return JsonResponse({"html_form": html_form})
     except Exception as e:
         messages.error(request, "Course Addition failed due to: " + str(e))
-    finally:
-        return redirect(display_all_courses)
+        return JsonResponse({})
 
 
 def update_course(request, id):
-    course = Course.objects.get(id=id)
-    if request.method == "POST":
-        form = AdminCourseForm(request.POST, instance=course)
-        if form.is_valid():
-            form.save()
-        return redirect(display_all_courses)
-    else:
-        form = AdminCourseForm(instance=course)
-        return render(request, 'admin/update_course.html', {'course_form': form, 'course': course})
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            course = Course.objects.get(id=id)
+            if request.method == "POST":
+                form = AdminCourseForm(request.POST, instance=course)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Course Updated successfully")
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("admin/course_form.html",
+                                                 {"course_form": form, "update": True, "course_id": id}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = AdminCourseForm(instance=course)
+                html_form = render_to_string("admin/course_form.html",
+                                             {"course_form": form, "update": True, "course_id": id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, "Course Update failed due to: " + str(e))
+        return JsonResponse({})
 
 
 def delete_course(request, id):

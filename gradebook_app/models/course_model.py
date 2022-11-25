@@ -26,11 +26,4 @@ class AdminCourseForm(forms.ModelForm):
         fields = "__all__"
         exclude = ['min_score', 'max_score', 'mean_score', 'thresholds']
 
-    def __init__(self, *args, **kwargs):
-        super(AdminCourseForm, self).__init__(*args, **kwargs)
-        self.fields['credits'].widget.attrs['min'] = 1
-        self.fields['credits'].widget.attrs['max'] = 10
-        self.fields['year'].widget.attrs['min'] = date.today().year
-        self.fields['year'].widget.attrs['max'] = date.today().year + 1
-
 

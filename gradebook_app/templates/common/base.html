@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,8 @@
             );
         });
     </script>
+    <script src="{% static 'js/admin/course_form_load_save.js' %}"></script>
+    <script src="{% static 'js/admin/profile_form_load_save.js' %}"></script>
     {% block head_css %}
     {% endblock %}
 </head>

@@ -12,13 +12,13 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'admin/add_profile.html' %}
     {% include 'admin/add_bulk_profiles.html' %}
     <div style="padding: 20px" class="col-md-12">
         <br>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_profile_popup">
+        <button id = "add_profile_btn" href="{% url 'add_profile' %}" type="button" class="btn btn-primary">
             Add Profile
         </button>
+        <div id="profile_div"></div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_bulk_profiles_popup">
             Add Bulk Profiles
         </button>
@@ -40,7 +40,7 @@
                         <td>{{ profile.first_name }}</td>
                         <td>{{ profile.email }}</td>
                         <td>{{ profile.type }}</td>
-                        <td><a href="/admin/profiles/update/{{ profile.id }}" class="btn btn-primary">Edit</a></td>
+                        <td><a id="update_profile_btn" href="/admin/profiles/update/{{ profile.id }}" class="btn btn-primary">Edit</a></td>
                         <td><a href="/admin/profiles/delete/{{ profile.id }}" class="btn btn-danger">Delete</a></td>
                     </tr>
                 {% endfor %}
