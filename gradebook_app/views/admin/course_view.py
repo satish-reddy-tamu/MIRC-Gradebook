@@ -1,12 +1,12 @@
-import csv
-from io import TextIOWrapper
+import json
 
-from django.http import HttpResponse
+from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from gradebook_app.models.course_model import Course, AdminCourseForm
-from gradebook_app.models.profile_model import Profile
 from gradebook_app.models.profile_model import AllocateCourseToStudentsForm
+from gradebook_app.models.profile_model import Profile
+
 
 def display_all_courses(request):
     courses = Course.objects.all()
@@ -18,15 +18,21 @@ def display_all_courses(request):
 
 
 def add_course(request):
-    form = AdminCourseForm(request.POST)
-    if form.is_valid():
-        try:
+    try:
+        form = AdminCourseForm(request.POST)
+        if form.is_valid():
             form.save()
-            return redirect(display_all_courses)
-        except:
-            print("save failed")
-    else:
-        print("invalid form")
+            messages.success(request, "Course Added successfully")
+        else:
+            for key, value in json.loads(form.errors.as_json()).items():
+                message = f"{key}: "
+                for val in value:
+                    message += val['message']
+                messages.error(request, message)
+    except Exception as e:
+        messages.error(request, "Course Addition failed due to: " + str(e))
+    finally:
+        return redirect(display_all_courses)
 
 
 def update_course(request, id):
@@ -42,9 +48,14 @@ def update_course(request, id):
 
 
 def delete_course(request, id):
-    course = Course.objects.get(id=id)
-    course.delete()
-    return redirect(display_all_courses)
+    try:
+        course = Course.objects.get(id=id)
+        course.delete()
+        messages.success(request, "Course Deleted Successfully")
+    except Exception as e:
+        messages.error(request, "Course deletion failed due to: " + str(e))
+    finally:
+        return redirect(display_all_courses)
 
 
 def getStudentList(form, request):
@@ -61,30 +72,31 @@ def getStudentList(form, request):
         professorEmail = form.cleaned_data['professors'].email
     if professorEmail != '':
         professors = [professorEmail]
-    
+
     try:
         file = request.FILES['students_csv']
         file_data = file.read().decode("utf-8")
         lines = file_data.split("\n")
-        for line in lines:	
+        for line in lines:
             line = line.rstrip()
             if line != '':
                 students.append(str(line))
     except:
         print("file upload error")
-        
+
     try:
         file = request.FILES['professors_csv']
         file_data = file.read().decode("utf-8")
         lines = file_data.split("\n")
-        for line in lines:	
+        for line in lines:
             line = line.rstrip()
             if line != '':
                 students.append(str(line))
     except:
         print("file upload error")
-    print(students+professors)
-    return students+professors
+    print(students + professors)
+    return students + professors
+
 
 def enrollStudents(course, students):
     for student in students:
@@ -93,9 +105,10 @@ def enrollStudents(course, students):
             # print("ex", Enrollment.objects.filter(profile=profile, course=course).exists())
             profile.courses.add(course)
             profile.save()
-        except Exception as e: 
+        except Exception as e:
             print(e)
             print("save failed")
+
 
 def enroll(request, id):
     course = Course.objects.get(id=id)
@@ -107,7 +120,7 @@ def enroll(request, id):
             try:
                 enrollStudents(course, students)
                 return redirect(display_all_courses)
-            except Exception as e: 
+            except Exception as e:
                 print(e)
                 print("save failed")
         else:

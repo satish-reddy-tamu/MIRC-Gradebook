@@ -39,23 +39,22 @@
         </div>
     </div>
 </nav>
-{#{% if messages %}#}
-{#    <div class="toast-container top-0 end-0 p-3">#}
-{#        {% for message in messages %}#}
-{#            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">#}
-{#                <div class="toast-header">#}
-{#                    <strong class="me-auto">Gradebook</strong>#}
-{#                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>#}
-{#                </div>#}
-{#                <div class="toast-body">#}
-{#                    {{ message }}#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#        {% endfor %}#}
-{#    </div>#}
-{#{% endif %}#}
-{% block content %}{% endblock %}
+{% if messages %}
+    <div class="toast-container top-0 end-0 p-3">
+        {% for message in messages %}
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                <div class="toast-header">
+                    <strong class="me-auto">Gradebook</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+            </div>
 
+        {% endfor %}
+    </div>
+{% endif %}
+{% block content %}{% endblock %}
 </body>
 </html>
