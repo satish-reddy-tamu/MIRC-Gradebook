@@ -1,0 +1,46 @@
+<form {% if add %}
+    action="{% url 'add_evaluation' course_id %}"
+{% elif update %}
+    action="{% url 'update_evaluation' course_id eval_id %}"
+{% else %}
+    action="{% url 'add_grade_function' course_id %}"
+{% endif %}
+    id="evaluation_form" method="post">
+    {% csrf_token %}
+    <div class="modal fade" id="evaluation_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        {% if add %}
+                            Add Evaluation
+                        {% elif update %}
+                            Update Evaluation
+                        {% else %}
+                            Add Grade Function
+                        {% endif %}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        {{ evaluation_form }}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">
+                        {% if add %}
+                            Add
+                        {% elif update %}
+                            Update
+                        {% else %}
+                            Add
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -17,7 +17,6 @@ class Departments(Enum):
 class ProfileType(Enum):
     STUDENT = "student"
     PROFESSOR = "professor"
-    STAFF = "staff"
     ADMIN = "admin"
 
     @classmethod

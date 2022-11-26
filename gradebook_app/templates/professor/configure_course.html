@@ -16,16 +16,15 @@
 
 
 {% block content %}
-    {% include 'professor/add_evaluation.html' %}
-    {% include 'professor/add_grade_function.html' %}
-    <br>
-    <div class="col-md-12">
-        <br>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_evaluation_popup">
+    <div style="padding: 20px" class="col-md-12">
+        <div id="evaluation_div"></div>
+        <button id="add_evaluation_btn" href="{% url 'add_evaluation' course_id %}" type="button"
+                class="btn btn-primary">
             Add Evaluation
         </button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_grade_function_popup">
-            Add Grade Function
+        <button id="add_grade_function_btn" href="{% url 'add_grade_function' course_id %}" type="button"
+                class="btn btn-primary">
+        Add Grade Function
         </button>
         <br><br>
         <div class="table-responsive">
@@ -36,7 +35,7 @@
                 <th>Type</th>
                 <th>Weight</th>
                 <th>Maximum marks</th>
-{#                <th>Edit</th>#}
+                <th>Edit</th>
                 <th>Delete</th>
                 </thead>
                 <tbody>
@@ -47,8 +46,11 @@
                         <td>{{ evaluation.eval_type }}</td>
                         <td>{{ evaluation.weight }}</td>
                         <td>{{ evaluation.max_marks }}</td>
-{#                        <td><a href="/admin/courses/update/{{ course.id }}" class="btn btn-primary">Edit</a></td>#}
-                        <td><a href="/professor/course/{{ course_id }}/evaluations/delete/{{ evaluation.id }}" class="btn btn-danger">Delete</a></td>
+                        <td><a id="update_evaluation_btn"
+                               href="/professor/course/{{ course_id }}/evaluations/update/{{ evaluation.id }}"
+                               class="btn btn-primary"><i class="bi bi-pencil"></a></td>
+                        <td><a href="/professor/course/{{ course_id }}/evaluations/delete/{{ evaluation.id }}"
+                               class="btn btn-danger"><i class="bi bi-trash3"</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -58,9 +60,15 @@
     <br>
     <br>
     {% if sum == 1 and grade_function %}
-        <button type="submit" onclick="location.href='/professor/course/{{ course_id }}/configure/submit'" class="btn btn-primary">Submit</button>
+        <button style="margin-left: 20px" type="submit"
+                onclick="location.href='/professor/course/{{ course_id }}/configure/submit'"
+                class="btn btn-primary">Submit
+        </button>
     {% else %}
-        <button type="submit" href="/professor/course/{{ course_id }}/configure/submit" class="btn btn-primary" disabled>Submit</button>
+        <button style="margin-left: 20px" type="submit" href="/professor/course/{{ course_id }}/configure/submit"
+                class="btn btn-primary"
+                disabled>Submit
+        </button>
     {% endif %}
 
 {% endblock %}
