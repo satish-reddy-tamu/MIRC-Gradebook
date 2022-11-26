@@ -1,6 +1,5 @@
-import datetime
-
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
@@ -20,10 +19,16 @@ class EvaluationForm(forms.ModelForm):
         model = Evaluation
         fields = ['name', 'eval_type', 'weight', 'max_marks']
 
+
 class GradeFunctionForm(forms.Form):
-    A = forms.IntegerField()
-    B = forms.IntegerField()
-    C = forms.IntegerField()
-    D = forms.IntegerField()
-    E = forms.IntegerField()
-    F = forms.IntegerField()
+    A = forms.IntegerField(min_value=0, max_value=100)
+    B = forms.IntegerField(min_value=0, max_value=100)
+    C = forms.IntegerField(min_value=0, max_value=100)
+    D = forms.IntegerField(min_value=0, max_value=100)
+    E = forms.IntegerField(min_value=0, max_value=100)
+    F = forms.IntegerField(min_value=0, max_value=100)
+
+    def clean(self):
+        values = list(self.cleaned_data.values())
+        if values != sorted(values, reverse=True):
+            raise ValidationError("Given Values are not sorted")

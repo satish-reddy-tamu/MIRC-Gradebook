@@ -1,6 +1,8 @@
 import pandas as pd
-from django.http import HttpResponse
+from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 
 from gradebook_app.models import Course
 from gradebook_app.models import Evaluation
@@ -58,54 +60,91 @@ def evaluations_list(request, id):
     try:
         evaluations = Evaluation.objects.filter(course_id=id).all()
     except Exception as e:
-        print(e)
-    return render(request, 'professor/evaluations_list.html', {
-        'evaluations': evaluations,
-        'course_id': id
-    })
+        messages.error(request, "Failed to load evaluation list: " + str(e))
+    finally:
+        return render(request, 'professor/evaluations_list.html', {
+            'evaluations': evaluations,
+            'course_id': id
+        })
 
 
 def add_evaluation(request, id):
-    form = EvaluationForm(request.POST)
-    if form.is_valid():
-        cleaned_data = form.cleaned_data
-        e = {
-            "id": request.session['eval_id'],
-            'name': cleaned_data.get("name"),
-            "eval_type": cleaned_data.get("eval_type"),
-            "weight": cleaned_data.get("weight"),
-            "max_marks": cleaned_data.get("max_marks")
-        }
-        request.session['evaluations'][request.session['eval_id']] = e
-        request.session['eval_id'] = str(int(request.session['eval_id']) + 1)
-        request.session.modified = True
-        return redirect(configure_course, id=id)
-    else:
-        print("invalid form")
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            if request.method == "POST":
+                form = EvaluationForm(request.POST)
+                if form.is_valid():
+                    cleaned_data = form.cleaned_data
+                    e = {
+                        "id": request.session['eval_id'],
+                        'name': cleaned_data.get("name"),
+                        "eval_type": cleaned_data.get("eval_type"),
+                        "weight": cleaned_data.get("weight"),
+                        "max_marks": cleaned_data.get("max_marks")
+                    }
+                    request.session['evaluations'][request.session['eval_id']] = e
+                    request.session['eval_id'] = str(int(request.session['eval_id']) + 1)
+                    request.session.modified = True
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("professor/evaluation_form.html",
+                                                 {"evaluation_form": form, "add": True, "course_id": id}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = EvaluationForm()
+                html_form = render_to_string("professor/evaluation_form.html",
+                                             {"evaluation_form": form, "add": True, "course_id": id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, "Evaluation Addition failed due to: " + str(e))
+        return JsonResponse({})
 
 
-# def update_evaluation(request, eval_id):
-#     evaluation = evaluations.get(eval_id)
-#     if request.method == "POST":
-#         form = EvaluationForm(request.POST, instance=evaluation)
-#         if form.is_valid():
-#             cleaned_data = form.cleaned_data
-#             e = Evaluation(id=eval_id,
-#                            name=cleaned_data.get("name"),
-#                            eval_type=cleaned_data.get("eval_type"),
-#                            weight=cleaned_data.get('weight'),
-#                            max_marks=cleaned_data.get("max_marks"))
-#             evaluations[e.id] = e
-#         else:
-#             print("Invalid Form")
-#     else:
-#         form = EvaluationForm(request.POST, instance=evaluation)
-#         return render(request, "")
+def update_evaluation(request, course_id, eval_id):
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            print(request.session['evaluations'].get(str(eval_id)))
+            evaluation_dict = request.session['evaluations'].get(str(eval_id))
+            evaluation = Evaluation(**evaluation_dict)
+            if request.method == "POST":
+                form = EvaluationForm(request.POST, instance=evaluation)
+                if form.is_valid():
+                    cleaned_data = form.cleaned_data
+                    e = {
+                        "id": str(eval_id),
+                        'name': cleaned_data.get("name"),
+                        "eval_type": cleaned_data.get("eval_type"),
+                        "weight": cleaned_data.get("weight"),
+                        "max_marks": cleaned_data.get("max_marks")
+                    }
+                    request.session['evaluations'][str(eval_id)] = e
+                    request.session.modified = True
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("professor/evaluation_form.html",
+                                                 {"evaluation_form": form, "update": True,
+                                                  "course_id": course_id, "eval_id": eval_id},
+                                                 request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = EvaluationForm(instance=evaluation)
+                html_form = render_to_string("professor/evaluation_form.html",
+                                             {"evaluation_form": form, "update": True,
+                                              "course_id": course_id, "eval_id": eval_id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, f"Evaluation ID: {id} Update failed due to: " + str(e))
+        return JsonResponse({})
+
 
 def delete_evaluation(request, course_id, eval_id):
-    request.session['evaluations'].pop(str(eval_id))
-    request.session.modified = True
-    return redirect(configure_course, id=course_id)
+    try:
+        request.session['evaluations'].pop(str(eval_id))
+        request.session.modified = True
+    except Exception as e:
+        messages.error(request, f"Evaluation ID: {id} Deletion failed due to: " + str(e))
+    finally:
+        return redirect(configure_course, id=course_id)
 
 
 def configure_course(request, id):
@@ -127,40 +166,56 @@ def configure_course(request, id):
 
 
 def add_course_configuration(request, id):
-    evaluation_objs = []
-    for eval in request.session['evaluations'].values():
-        evaluation_objs.append(Evaluation(
-            name=eval['name'],
-            eval_type=eval['eval_type'],
-            weight=eval['weight'],
-            max_marks=eval['max_marks'],
-            course_id=id
-        )
-        )
-    Evaluation.objects.bulk_create(evaluation_objs)
-    Course.objects.filter(id=id).update(thresholds=request.session['grade_function'])
-    request.session['evaluations'].clear()
-    request.session['eval_id'] = 1
-    request.session['grade_function'] = ""
-    request.session.modified = True
-    return HttpResponse("Success")
+    try:
+        evaluation_objs = []
+        for eval in request.session['evaluations'].values():
+            evaluation_objs.append(Evaluation(
+                name=eval['name'],
+                eval_type=eval['eval_type'],
+                weight=eval['weight'],
+                max_marks=eval['max_marks'],
+                course_id=id
+            )
+            )
+        Evaluation.objects.bulk_create(evaluation_objs)
+        Course.objects.filter(id=id).update(thresholds=request.session['grade_function'])
+        request.session['evaluations'].clear()
+        request.session['eval_id'] = 1
+        request.session['grade_function'] = ""
+        request.session.modified = True
+        messages.error(request, f"Course ID: {id} Configuration added successfully")
+    except Exception as e:
+        messages.error(request, f"Course ID: {id} Configuration addition failed: {str(e)}")
+    finally:
+        return redirect(view_course_details, id=id)
 
 
 def add_grade_function(request, id):
-    form = GradeFunctionForm(request.POST)
-    if form.is_valid():
-        thresholds = []
-        thresholds.append(form.cleaned_data.get("A"))
-        thresholds.append(form.cleaned_data.get("B"))
-        thresholds.append(form.cleaned_data.get("C"))
-        thresholds.append(form.cleaned_data.get("D"))
-        thresholds.append(form.cleaned_data.get("E"))
-        thresholds.append(form.cleaned_data.get("F"))
-        thresholds = list(map(int, thresholds))
-        if thresholds == sorted(thresholds, reverse=True):
-            thresholds = list(map(str, thresholds))
-            request.session['grade_function'] = ",".join(thresholds)
-            request.session.modified = True
-        else:
-            print("Wrong values")
-    return redirect(configure_course, id=id)
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            if request.method == "POST":
+                form = GradeFunctionForm(request.POST)
+                if form.is_valid():
+                    thresholds = [form.cleaned_data.get("A"),
+                                  form.cleaned_data.get("B"),
+                                  form.cleaned_data.get("C"),
+                                  form.cleaned_data.get("D"),
+                                  form.cleaned_data.get("E"),
+                                  form.cleaned_data.get("F")
+                                  ]
+                    thresholds = list(map(str, thresholds))
+                    request.session['grade_function'] = ",".join(thresholds)
+                    request.session.modified = True
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("professor/evaluation_form.html",
+                                                 {"evaluation_form": form, "course_id": id}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = GradeFunctionForm()
+                html_form = render_to_string("professor/evaluation_form.html",
+                                             {"evaluation_form": form, "course_id": id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, "Grade Function Addition failed due to: " + str(e))
+        return JsonResponse({})

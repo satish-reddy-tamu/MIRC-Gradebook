@@ -1,9 +1,0 @@
-<form action="/admin/courses/update/{{ course.id }}" method="post">
-    {% csrf_token %}
-    {{ course_form.as_table }}
-    <button class="btn btn-primary">
-        <span class="glyphicon" style="margin-right:5px;"></span>
-        Submit
-    </button>
-</form>
-

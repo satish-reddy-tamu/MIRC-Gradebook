@@ -23,7 +23,6 @@ def login(request):
 
     try:
         profile = Profile.objects.get(email=user_email)
-        messages.success(request, f'Hello world {user_email}')
         if profile.type in ProfileType.get_all_profiles():
             if profile.type == ProfileType.PROFESSOR.value:
                 return professor_dashboard(request, profile)

@@ -1,0 +1,40 @@
+<form {% if add %}
+    action="{% url 'add_profile' %}"
+{% elif update %}
+    action="{% url 'update_profile' profile_id %}"
+{% endif %} id="profile_form" method="post">
+    {% csrf_token %}
+    <div class="modal fade" id="profile_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        {% if add %}
+                            Add Profile
+                        {% elif update %}
+                            Update Profile
+                        {% endif %}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        {{ profile_form }}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">
+                        {% if add %}
+                            Add
+                        {% elif update %}
+                            Update
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
