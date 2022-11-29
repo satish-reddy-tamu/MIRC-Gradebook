@@ -40,4 +40,7 @@ urlpatterns = [
     path('professor/course/<int:id>/evaluations/add_grade_function', dashboard_view.add_grade_function,
          name='add_grade_function'),
 
+    # student
+
+
 ]
