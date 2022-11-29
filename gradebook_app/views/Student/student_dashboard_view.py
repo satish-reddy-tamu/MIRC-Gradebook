@@ -15,10 +15,10 @@ def student_dashboard(request, profile):
     courses = profile.courses.all()
     return render(request, f"student/hometemp2.html", {'courses': courses, 'profile': profile})
 
-#
-# def view_course_details(request, id):
-#     return render(request, "professor/course_details.html", {'course_id': id})
-#
+
+def view_course_details(request, course_id, profile_id):
+    return render(request, "student/course_dashboard.html", {'course_id': course_id , 'profile_id': profile_id})
+
 #
 # def view_students_list(request, id):
 #     students = []

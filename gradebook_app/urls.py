@@ -5,6 +5,7 @@ from gradebook_app.views.admin import course_view
 from gradebook_app.views.admin import profile_view
 from gradebook_app.views.common import login_view
 from gradebook_app.views.professor import dashboard_view
+from gradebook_app.views.student import student_dashboard_view
 
 urlpatterns = [
     path('', RedirectView.as_view(url='home')),
@@ -41,6 +42,7 @@ urlpatterns = [
          name='add_grade_function'),
 
     # student
+    path('student/course/<int:course_id>/<int:profile_id>', student_dashboard_view.view_course_details, name='student_view_course_details'),
 
 
 ]

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from gradebook_app.models.profile_model import Profile, ProfileType
 from gradebook_app.views.professor.dashboard_view import professor_dashboard
-from gradebook_app.views.student.dashboard_view import student_dashboard
+from gradebook_app.views.student.student_dashboard_view import student_dashboard
 
 def home(request):
     try:
