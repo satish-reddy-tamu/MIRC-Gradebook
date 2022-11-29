@@ -30,13 +30,21 @@ def view_course_details(request, id):
     bottom_students = x.order_by('score')[:5].values('profile__first_name', 'profile__email', 'score')
     d = x.values('grade').annotate(count=Count('grade')).order_by('count')
     print(d)
+    
+    grades =[]
+    numbers =[]
+    for query in d:
+        grades.append(query['grade'])
+        numbers.append(query['count'])
     return render(request, 'professor/course_details.html', {
         
         'course_id': id,
         **y,
         'top_students': top_students,
         'bottom_students' : bottom_students,
-        'grade_distribution' : d
+        'grade_distribution' : d,
+        'grades' : grades,
+        'numbers' : numbers
     })
 
 
