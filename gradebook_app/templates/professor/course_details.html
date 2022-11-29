@@ -1,3 +1,6 @@
+<style>
+h4 {text-align: center;}
+</style>
 {% extends "common/base.html" %}
 {% block nav_links %}
     <li class="nav-item">
@@ -14,8 +17,117 @@
     </li>
 {% endblock %}
 
-{%block content  %}
-    <div class="text-center align-content-center">
-        <h4>Course Details Page</h4>
+{% block content %}
+    <div class="col-md-12">
+        <br>
+        <h4>Course Metrics</h4>
+        <div class="table-responsive-sm">
+            <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+                <thead>
+                <th>Mean</th>
+                <th>Max Score</th>
+                <th>Min Score</th>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>{{score__avg}}</td>
+                        <td>{{score__max}}</td>
+                        <td>{{score__min}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h4>Top Students</h4>
+            <div class="table-responsive-sm">
+                <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+                    <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Score</th>
+                    </thead>
+                    <tbody>
+                    {% for student in top_students %}
+                        <tr>
+                            <td>{{ student.profile__first_name  }}</td>
+                            <td>{{ student.profile__email }}</td>
+                            <td>{{ student.score }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <h4>Bottom Students</h4>
+            <div class = "container">
+            <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <div class = "row">
+                <div class = "col">
+
+                </div>
+                    
+                
+            <!-- <div class="table-responsive-sm"> -->
+               
+                    <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Score</th>
+                    </thead>
+                    <div class = "col">
+                
+                    </div>
+                 
+            </div>
+                
+                    <tbody>
+
+                    {% for student in bottom_students %}
+                        <tr>
+                            <td>{{ student.profile__first_name  }}</td>
+                            <td>{{ student.profile__email }}</td>
+                            <td>{{ student.score }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+        </div>
+
+        <h4>Grade Distribution</h4>
+            <div class = "container">
+            <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+            <div class = "row">
+                <div class = "col">
+
+                </div>
+                    
+                
+            <!-- <div class="table-responsive-sm"> -->
+               
+                    <thead>
+                    <th>Grades</th>
+                    </thead>
+                    
+                    <div class = "col">
+                
+                    </div>
+                 
+            </div>
+                
+                    <tbody>
+
+                    {% for grade in grade_distribution %}
+                        <tr>
+                            <td>{{ grade.grade}}</td>
+                            <td>{{ grade.count  }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+        </div>
+
+
+
     </div>
 {% endblock %}
