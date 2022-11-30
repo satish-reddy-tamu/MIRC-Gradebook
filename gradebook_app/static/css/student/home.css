@@ -9,12 +9,16 @@ p {
 	font-size: 65px;
 }
 .student-dash{
-	background-color: #ffffff;
+	background-color: #2e2e2e;
 	color: #fff;
 	padding: 20px 20px;
+	min-height: 100vh;
+	height: 100%;
+	width: 100%;
+	max-width: 1600px;
 }
 .section-title h3 {
-	color: #000000;
+	color: #ffffff;
 	font-size: 35px;
 	text-transform: uppercase;
 	font-weight: 400;
@@ -27,7 +31,7 @@ p {
 }
 .col-md-3 {
     text-align: center;
-    background: #fff;
+    background: #2e2e2e;
 	padding: 50px 0px;
 }
 .student-dash-card {
@@ -100,7 +104,7 @@ p {
 	padding: 13px;
 	font-size: 16px;
 	border-bottom: 1px solid #eee;
-	color: #450000;
+	color: #000000;
 
 }
 .course-stats .line{
@@ -120,7 +124,7 @@ p {
 	border-top: 1px solid #eee;
 }
 .course-detail {
-	background: #450000;
+	background: #000000;
 }
 .course-detail a {
 	color: #fff;

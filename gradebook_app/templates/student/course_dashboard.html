@@ -1,4 +1,10 @@
 {% extends "common/base.html" %}
+
+ {% block head_css  %}
+     <link rel="stylesheet" type="text/css" href="../../../static/css/student/course_dashboard.css"/>
+
+ {% endblock %}
+
 {% block nav_links %}
     <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
@@ -10,7 +16,126 @@
 {% endblock %}
 
 {%block content  %}
-    <div class="text-center align-content-center">
-        <h4>{{ course_id }} Details Page of {{ profile_id }}</h4>
-    </div>
+    <div class="indi-course-dash">
+
+
+		<div class="indi-course-dash-body-main-content">
+			<section class="service-section">
+				<h2>{{ course.name}}</h2>
+
+
+				<div class="tiles">
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Current Score</span>
+								<span>85</span>
+							</h3>
+						</div>
+
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Mean Score</span>
+								<span>88</span>
+							</h3>
+						</div>
+
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Max Score</span>
+								<span>98</span>
+							</h3>
+						</div>
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Projected Score</span>
+								<span>92</span>
+							</h3>
+						</div>
+					</article>
+                    <article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Projected Grade</span>
+								<span>A</span>
+							</h3>
+						</div>
+					</article>
+				</div>
+
+
+
+				<div class="service-section-footer">
+					<p></p>
+				</div>
+
+			</section>
+			<section class="transfer-section">
+				<div class="transfer-section-header">
+					<h2>Marks Distribution</h2>
+				</div>
+				<div class="transfers">
+
+					<div class="transfer">
+
+						<dl class="transfer-details-head">
+							<div>
+								<dt>Evaluation Criteria</dt>
+							</div>
+							<div>
+								<dt>Individual Score</dt>
+
+							</div>
+							<div>
+								<dt>Mean Score</dt>
+							</div>
+							<div>
+								<dt>Max Score</dt>
+							</div>
+						</dl>
+
+					</div>
+
+                    {% for eval in evaluations %}
+					<div class="transfer">
+
+						<dl class="transfer-details">
+							<div>
+								<dt>{{ eval.name }}</dt>
+								<dd>Weight : {{ eval.weight }}</dd>
+							</div>
+							<div>
+								<dt>80</dt>
+								<dd>/100</dd>
+							</div>
+							<div>
+								<dt>88</dt>
+								<dd>/100</dd>
+							</div>
+							<div>
+								<dt>98</dt>
+								<dd>/100</dd>
+							</div>
+						</dl>
+
+					</div>
+                    {% endfor %}
+
+
+                </div>
+
+			</section>
+		</div>
+
+
+	</div>
+</div>
 {% endblock %}

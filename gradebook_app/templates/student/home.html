@@ -1,5 +1,14 @@
 {% extends 'common/base.html' %}
 
+
+ {% block head_css  %}
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" type="text/css" href="../../static/css/student/home.css"/>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ {% endblock %}
+
 {% block nav_links %}
     <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
@@ -10,29 +19,59 @@
 {% endblock %}
 
 {% block content %}
-    <br>
-    <div class="row">
-        {% for course in courses %}
-            <div style="padding: 30px" class="col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        {{ course.course_code }}
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ course.name }}</h5>
-                        <p class="card-text">{{ course.description }}</p>
-{#                        {% if course.thresholds %}#}
-{#                            <a href="/student/course/{{ course.id }}" class="btn btn-primary">Go to Course</a>#}
-{#                        {%else  %}#}
-{#                            <a href="/student/course/{{ course.id }}/configure" class="btn btn-primary">Configure</a>#}
-{#                        {% endif %}  #}
 
+    <div class="student-dash">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="section-title text-center">
+                        <h3>{{ profile_first_name }}'s Dashboard</h3>
                     </div>
+
                 </div>
             </div>
-        {% endfor %}
+            <div class="row">
+
+                {% for i,j,ps,pg,me,ma in zipped  %}
+
+                       <div class="col-md-3">
+                            <div class="student-dash-card">
+                                <div class="course-code">
+                                    <h3>{{ i.course_code }}</h3>
+                                </div>
+
+                                <div class="course-name">
+                                    <ul>
+                                        <li>{{ i.name }}</li>
+                                    </ul>
+                                </div>
+                                <div class="course-score">
+
+                                    <div class="score">{{ j }}</div>
+                                    <div class="parameter">current score</div>
+                                </div>
+                                <div class="course-stats">
+                                    <ul>
+                                        <li><li class= "line">Mean Score : </li> <li class= "line">{{ me }}</li></li>
+                                        <li><li class="line">Max Score : </li> <li class="line">{{ ma }}</li></li>
+                                        <li><li class="line">Projected Score : </li> <li class="line">{{ ps }}</li></li>
+                                        <li><li class="line">Projected Grade : </li> <li class="line">{{ pg }}</li></li>
+
+                                    </ul>
+                                </div>
+                                <div class="course-detail">
+                                    <a href="/student/course/{{ i.id }}/{{ profile_id }}" class="btn-system btn-small">Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                {% endfor %}
+
+            </div>
+        </div>
     </div>
-    <br>
+
+
 {% endblock %}
-
-
