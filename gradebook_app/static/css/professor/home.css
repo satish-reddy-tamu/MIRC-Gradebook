@@ -5,6 +5,14 @@ body{
 	font-family: 'Raleway',sans-serif;
 	color: #fff;
 }
+.table-title th{
+	font-size: 20px;
+	font-weight: 500;
+	padding: 20px;
+	color: #000;
+	letter-spacing: 2px;
+	text-align: center;
+}
 .dash-title h4{
 	font-size: 20px;
 	font-weight: 500;

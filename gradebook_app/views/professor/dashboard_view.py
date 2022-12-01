@@ -36,7 +36,7 @@ def view_course_details(request, id):
     for query in d:
         grades.append(query['grade'])
         numbers.append(query['count'])
-    return render(request, 'professor/course_details.html', {
+    return render(request, 'professor/course_dashboard.html', {
         
         'course_id': id,
         **y,
