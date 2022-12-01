@@ -33,35 +33,40 @@
             </div>
             <div class="row">
 
-                {% for i,j,ps,pg,me,ma in zipped  %}
+                {% for course in courses  %}
 
                        <div class="col-md-3">
                             <div class="student-dash-card">
                                 <div class="course-code">
-                                    <h3>{{ i.course_code }}</h3>
+                                    <h3>{{ course.course__course_code }}</h3>
                                 </div>
 
                                 <div class="course-name">
                                     <ul>
-                                        <li>{{ i.name }}</li>
+                                        <li>{{ course.course__name }}</li>
                                     </ul>
                                 </div>
                                 <div class="course-score">
 
-                                    <div class="score">{{ j }}</div>
+                                    <div class="score">{{ course.score }}</div>
                                     <div class="parameter">current score</div>
                                 </div>
-                                <div class="course-stats">
-                                    <ul>
-                                        <li><li class= "line">Mean Score : </li> <li class= "line">{{ me }}</li></li>
-                                        <li><li class="line">Max Score : </li> <li class="line">{{ ma }}</li></li>
-                                        <li><li class="line">Projected Score : </li> <li class="line">{{ ps }}</li></li>
-                                        <li><li class="line">Projected Grade : </li> <li class="line">{{ pg }}</li></li>
+                                <div class="course-score">
 
-                                    </ul>
+                                    <div class="score">A</div>
+                                    <div class="parameter">current grade</div>
                                 </div>
+{#                                <div class="course-stats">#}
+{#                                    <ul>#}
+{#                                        <li><li class= "line">Mean Score : </li> <li class= "line">{{ me }}</li></li>#}
+{#                                        <li><li class="line">Max Score : </li> <li class="line">{{ ma }}</li></li>#}
+{#                                        <li><li class="line">Projected Score : </li> <li class="line">{{ ps }}</li></li>#}
+{#                                        <li><li class="line">Projected Grade : </li> <li class="line">{{ pg }}</li></li>#}
+{##}
+{#                                    </ul>#}
+{#                                </div>#}
                                 <div class="course-detail">
-                                    <a href="/student/course/{{ i.id }}/{{ profile_id }}" class="btn-system btn-small">Details</a>
+                                    <a href="/student/{{ profile_id }}/course/{{ course.course_id }}" class="btn-system btn-small">Details</a>
                                 </div>
                             </div>
                         </div>

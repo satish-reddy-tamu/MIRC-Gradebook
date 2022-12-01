@@ -42,7 +42,7 @@ urlpatterns = [
          name='add_grade_function'),
 
     # student
-    path('student/course/<int:course_id>/<int:profile_id>', student_dashboard_view.view_course_details, name='student_view_course_details'),
+    path('student/<int:profile_id>/course/<int:course_id>', student_dashboard_view.view_course_details, name='student_view_course_details'),
 
 
 ]
