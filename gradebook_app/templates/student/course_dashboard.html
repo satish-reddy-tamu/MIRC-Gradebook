@@ -1,0 +1,208 @@
+{% extends "common/base.html" %}
+
+ {% block head_css  %}
+     <link rel="stylesheet" type="text/css" href="../../../static/css/student/course_dashboard.css"/>
+
+ {% endblock %}
+
+{% block nav_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+    </li>
+{% endblock %}
+
+{%block content  %}
+    <div class="indi-course-dash">
+
+
+		<div class="indi-course-dash-body-main-content">
+			<section class="service-section">
+				<h2>{{ course.0.name }}</h2>
+
+
+				<div class="tiles">
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Your Current Score</span>
+								<span>{{ score_grade.0.score }}</span>
+							</h3>
+						</div>
+                    </article>
+                    <article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Your Grade</span>
+								<span>{{ score_grade.0.grade }}</span>
+							</h3>
+						</div>
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Class Mean Score</span>
+								<span>{{ stats.score__avg }}</span>
+							</h3>
+						</div>
+
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Class Max Score</span>
+								<span>{{ stats.score__max }}</span>
+							</h3>
+						</div>
+					</article>
+
+                    <article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Class Min Score</span>
+								<span>{{ stats.score__min }}</span>
+							</h3>
+						</div>
+					</article>
+
+
+				</div>
+
+
+
+{#				<div class="service-section-footer">#}
+{#					<p></p>#}
+{#				</div>#}
+
+			</section>
+			<section class="transfer-section">
+				<div class="transfer-section-header">
+					<h2>Marks Distribution</h2>
+				</div>
+				<div class="transfers">
+
+					<div class="transfer">
+
+						<dl class="transfer-details-head">
+							<div>
+								<dt>Evaluation Criteria</dt>
+							</div>
+							<div>
+								<dt>Marks</dt>
+							</div>
+							<div>
+								<dt>Score</dt>
+							</div>
+						</dl>
+
+					</div>
+
+                    {% for eval in evaluations %}
+					<div class="transfer">
+
+						<dl class="transfer-details">
+							<div>
+								<dt>{{ eval.evaluation__name }}</dt>
+								<dd>Weight : {{ eval.evaluation__weight }}</dd>
+							</div>
+							<div>
+								<dt>{{ eval.marks }}</dt>
+								<dd>/{{ eval.evaluation__max_marks }}</dd>
+							</div>
+							<div>
+								<dt>{{ eval.score }}</dt>
+								<dd>/{{ eval.max_score }}</dd>
+							</div>
+						</dl>
+
+					</div>
+                    {% endfor %}
+
+                    <div class="transfer">
+
+                            <dl class="transfer-details-head">
+                                <div>
+                                    <dt>Total</dt>
+                                </div>
+                                <div>
+                                    <dt>{{ total.marks__sum }}</dt>
+                                    <dd>/{{ total.evaluation__max_marks__sum }}</dd>
+                                </div>
+                                <div>
+                                    <dt>{{ total.score__sum }}</dt>
+                                    <dd>/{{ total.max_score__sum }}</dd>
+                                </div>
+                            </dl>
+
+                    </div>
+
+
+
+                </div>
+
+			</section>
+
+            <section class="service-section-thres">
+                    <h2> Grading Criteria</h2>
+
+
+                    <div class="tiles-thres">
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> 100 > A > {{ thresholds.0 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.0 }} > B > {{ thresholds.1 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.1 }} > C > {{ thresholds.2 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.2 }} > D > {{ thresholds.3 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.3 }} > E > {{ thresholds.4 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.4 }} > F > 0</span>
+                                </h3>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+
+                </section>
+
+        </div>
+
+	</div>
+</div>
+{% endblock %}
