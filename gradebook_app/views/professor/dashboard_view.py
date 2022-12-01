@@ -2,6 +2,7 @@ import pandas as pd
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.db.models import Avg, Max, Min, Count
 from django.template.loader import render_to_string
 
 from gradebook_app.models import Course
@@ -9,6 +10,7 @@ from gradebook_app.models import Evaluation
 from gradebook_app.models import Marks
 from gradebook_app.models.common_classes import ProfileType
 from gradebook_app.models.evaluation_model import EvaluationForm, GradeFunctionForm
+from gradebook_app.models.profile_model import ProfileCourse
 
 
 def professor_dashboard(request, profile):
@@ -17,7 +19,38 @@ def professor_dashboard(request, profile):
 
 
 def view_course_details(request, id):
-    return render(request, "professor/course_details.html", {'course_id': id})
+    #mean = ProfileCourse.objects.filter(course__id=id).aggregate(num = Avg('score')).get("num")
+    #max_score = ProfileCourse.objects.filter(course__id=id).aggregate(mx= Max('score')).get("mx")
+    #min_score = ProfileCourse.objects.filter(course__id=id).aggregate(mn= Min('score')).get("mn")
+    x = ProfileCourse.objects.filter(
+        course_id=id,
+        profile__type=ProfileType.STUDENT.value)
+    y = x.aggregate(
+        Avg('score'), Max('score'), Min('score')
+    )
+    print(y)
+    top_students = x.order_by('-score')[:5].values('profile__first_name', 'profile__email', 'score')
+    bottom_students = x.order_by('score')[:5].values('profile__first_name', 'profile__email', 'score')
+    d = x.values('grade').annotate(count=Count('grade')).order_by('count')
+    print(d)
+    
+    grades =[]
+    numbers =[]
+    for query in d:
+        grades.append(query['grade'])
+        numbers.append(query['count'])
+    return render(request, 'professor/course_dashboard.html', {
+        
+        'course_id': id,
+        **y,
+        'top_students': top_students,
+        'bottom_students' : bottom_students,
+        'grade_distribution' : d,
+        'grades' : grades,
+        'numbers' : numbers
+    })
+
+
 
 
 def view_students_list(request, id):
