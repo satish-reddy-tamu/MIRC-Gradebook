@@ -1,39 +1,46 @@
 from csv import DictReader
 from io import TextIOWrapper
 
-from django.http import HttpResponse
+from django.contrib import messages
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 
-from gradebook_app.models.profile_model import Profile, ProfileForm, Course, AllocateCourseToStudentsForm
-from gradebook_app.models.course_model import Course, AdminCourseForm
+from gradebook_app.models.profile_model import Profile, ProfileForm
 
-def display_all_courses(request):
-    courses = Course.objects.all()
-    return render(request, 'admin/courses.html', {
-        'courses': courses,
-        'add_course_form': AdminCourseForm(),
-        'assign_course_to_profile_form': AllocateCourseToStudentsForm()
-    })
 
 def display_all_profiles(request):
-    profiles = Profile.objects.all()
-    return render(request, 'admin/profiles.html', {
-        'profiles': profiles,
-        'add_profile_form': ProfileForm()
-    })
+    try:
+        profiles = Profile.objects.all()
+        return render(request, 'admin/profiles.html', {
+            'profiles': profiles,
+            'add_profile_form': ProfileForm()
+        })
+    except Exception as e:
+        messages.error(request, "Error loading profiles: " + str(e))
+        return HttpResponse("Error loading profiles: " + str(e))
 
 
 def add_profile(request):
-    print("heer-----------")
-    form = ProfileForm(request.POST)
-    if form.is_valid():
-        try:
-            form.save()
-            return redirect(display_all_profiles)
-        except:
-            print("save failed")
-    else:
-        print("invalid form")
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            if request.method == "POST":
+                form = ProfileForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Profile Added successfully")
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("admin/profile_form.html", {"profile_form": form, "add": True},
+                                                 request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = ProfileForm()
+                html_form = render_to_string("admin/profile_form.html", {"profile_form": form, "add": True}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, "Profile Addition failed due to: " + str(e))
+        return JsonResponse({})
 
 
 def add_bulk_profiles(request):
@@ -43,30 +50,51 @@ def add_bulk_profiles(request):
         for row in DictReader(profiles_csv_file):
             profile = Profile(
                 email=row['email'],
-                name=row['name'],
+                first_name=row['first_name'],
+                last_name=row['last_name'],
+                department=row['department'],
+                phone=row['phone'],
                 type=row['type']
             )
             profiles_list.append(profile)
         Profile.objects.bulk_create(profiles_list)
-        return redirect(display_all_profiles)
+        messages.success(request, "Bulk Profiles Added Successfully")
     except Exception as e:
-        print(e)
-        return HttpResponse("failed" + str(e))
+        messages.error(request, "Bulk Profiles Addition failed due to: " + str(e))
+    finally:
+        return redirect(display_all_profiles)
 
 
 def update_profile(request, id):
-    profile = Profile.objects.get(id=id)
-    if request.method == "POST":
-        form = ProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-        return redirect(display_all_profiles)
-    else:
-        form = ProfileForm(instance=profile)
-        return render(request, 'admin/update_profile.html', {'profile_form': form, 'profile': profile})
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            profile = Profile.objects.get(id=id)
+            if request.method == "POST":
+                form = ProfileForm(request.POST, instance=profile)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, f"Profile ID: {id} Updated successfully")
+                    return JsonResponse({"form_is_valid": True})
+                else:
+                    html_form = render_to_string("admin/profile_form.html",
+                                                 {"profile_form": form, "update": True, "profile_id": id}, request)
+                    return JsonResponse({"form_is_valid": False, "html_form": html_form})
+            elif request.method == "GET":
+                form = ProfileForm(instance=profile)
+                html_form = render_to_string("admin/profile_form.html",
+                                             {"profile_form": form, "update": True, "profile_id": id}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, f"Profile ID: {id} Update failed due to: " + str(e))
+        return JsonResponse({})
 
 
 def delete_profile(request, id):
-    profile = Profile.objects.get(id=id)
-    profile.delete()
-    return redirect(display_all_profiles)
+    try:
+        profile = Profile.objects.get(id=id)
+        profile.delete()
+        messages.success(request, f"Profile ID: {id} Deleted Successfully")
+    except Exception as e:
+        messages.error(request, f"Profile ID: {id} Deletion failed due to: " + str(e))
+    finally:
+        return redirect(display_all_profiles)
