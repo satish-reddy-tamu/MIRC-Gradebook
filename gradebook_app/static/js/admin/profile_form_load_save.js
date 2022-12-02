@@ -35,6 +35,7 @@
                 },
                 error: function (response) {
                     $("#profile_popup").modal("hide");
+                    location.reload();
                 }
             });
             return false;

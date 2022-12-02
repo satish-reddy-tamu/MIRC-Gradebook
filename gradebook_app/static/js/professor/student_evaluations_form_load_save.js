@@ -35,6 +35,7 @@
                 },
                 error: function (response) {
                     $("#student_evaluations_edit_popup").modal("hide");
+                    location.reload();
                 }
             });
             return false;
