@@ -6,7 +6,8 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 
-from gradebook_app.models.profile_model import Profile, ProfileForm
+from gradebook_app.forms.profile_form import ProfileForm
+from gradebook_app.models.profile_model import Profile
 
 
 def display_all_profiles(request):

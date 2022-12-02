@@ -32,6 +32,7 @@ urlpatterns = [
     path('professor/course/<int:id>/configure/submit', dashboard_view.add_course_configuration,
          name='add_course_configuration'),
     path('professor/course/<int:id>/students', dashboard_view.view_students_list, name='view_students_list'),
+    path('professor/course/<int:course_id>/students/<int:profile_id>/update', dashboard_view.update_student_evaluation, name='update_student_evaluation'),
     path('professor/course/<int:id>/evaluations', dashboard_view.evaluations_list, name='evaluations_list'),
     path('professor/course/<int:id>/evaluations/add', dashboard_view.add_evaluation, name='add_evaluation'),
     path('professor/course/<int:course_id>/evaluations/update/<int:eval_id>', dashboard_view.update_evaluation,

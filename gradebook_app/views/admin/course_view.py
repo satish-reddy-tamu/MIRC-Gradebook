@@ -3,8 +3,8 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 
-from gradebook_app.models.course_model import Course, AdminCourseForm
-from gradebook_app.models.profile_model import AllocateCourseToStudentsForm
+from gradebook_app.forms.course_form import AdminCourseForm, AllocateCourseToStudentsForm
+from gradebook_app.models.course_model import Course
 from gradebook_app.models.profile_model import Profile
 
 

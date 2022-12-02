@@ -1,16 +1,17 @@
-import pandas as pd
 from django.contrib import messages
+from django.db.models import Avg, Max, Min, Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.db.models import Avg, Max, Min, Count
 from django.template.loader import render_to_string
 
+from gradebook_app.forms.evaluation_form import EvaluationForm
+from gradebook_app.forms.grade_function_form import GradeFunctionForm
+from gradebook_app.forms.student_evaluations_edit_form import EvaluationEditForm
 from gradebook_app.models import Course
 from gradebook_app.models import Evaluation
 from gradebook_app.models import Marks
-from gradebook_app.models.common_classes import ProfileType
-from gradebook_app.models.evaluation_model import EvaluationForm, GradeFunctionForm
-from gradebook_app.models.profile_model import ProfileCourse
+from gradebook_app.models.profile_model import ProfileCourse, Profile
+from gradebook_app.util.enums_util import ProfileType
 
 
 def professor_dashboard(request, profile):
@@ -19,73 +20,94 @@ def professor_dashboard(request, profile):
 
 
 def view_course_details(request, id):
-    #mean = ProfileCourse.objects.filter(course__id=id).aggregate(num = Avg('score')).get("num")
-    #max_score = ProfileCourse.objects.filter(course__id=id).aggregate(mx= Max('score')).get("mx")
-    #min_score = ProfileCourse.objects.filter(course__id=id).aggregate(mn= Min('score')).get("mn")
     x = ProfileCourse.objects.filter(
         course_id=id,
         profile__type=ProfileType.STUDENT.value)
     y = x.aggregate(
         Avg('score'), Max('score'), Min('score')
     )
-    print(y)
     top_students = x.order_by('-score')[:5].values('profile__first_name', 'profile__email', 'score')
     bottom_students = x.order_by('score')[:5].values('profile__first_name', 'profile__email', 'score')
     d = x.values('grade').annotate(count=Count('grade')).order_by('count')
-    print(d)
-    
-    grades =[]
-    numbers =[]
+
+    grades = []
+    numbers = []
     for query in d:
         grades.append(query['grade'])
         numbers.append(query['count'])
+    for key, value in y.items():
+        y[key] = round(value, 2)
     return render(request, 'professor/course_dashboard.html', {
-        
+
         'course_id': id,
         **y,
         'top_students': top_students,
-        'bottom_students' : bottom_students,
-        'grade_distribution' : d,
-        'grades' : grades,
-        'numbers' : numbers
+        'bottom_students': bottom_students,
+        'grade_distribution': d,
+        'grades': grades,
+        'numbers': numbers
     })
-
-
 
 
 def view_students_list(request, id):
-    students = []
-    marks = []
-    evals = []
-    data = {}
-    evalIDs = []
-    df = pd.DataFrame({})
-    try:
-        students = Course.objects.get(id=id).profiles.filter(type=ProfileType.STUDENT.value).all()
-        # for obj in Evaluation.objects.all():
-        #     print(obj.name)
-        marks = Marks.objects.filter(course_id=id).all()
-        evals = Evaluation.objects.filter(course_id=id).all()
-        evalIDs = [ev.id for ev in evals]
-        for student in students:
-            print(student.id)
-            student_marks = []
-            for evid in evalIDs:
-                student_marks.append(
-                    marks.filter(evaluation_id=evid, profile_id=student.id).values('marks'))  # change filter
-            data[student.id] = student_marks
-        df = pd.DataFrame(data, index=evalIDs)
-        # print(student.id for student in students)
-        print(df[3][1][0]['marks'])
-    except Exception as e:
-        print(e)
+    students = Profile.objects.filter(type=ProfileType.STUDENT.value, profilecourse__course_id=id).values(
+        'id', 'first_name', 'profilecourse__score', 'profilecourse__grade'
+    )
+    total_evaluations = Evaluation.objects.filter(course_id=id).values(
+        'id', 'name', 'max_marks'
+    )
+    final_evaluations = []
+    for student in students:
+        row = [student['id'], student['first_name']]
+        for e in total_evaluations:
+            graded_evaluation = Marks.objects.filter(course_id=id, profile_id=student['id'],
+                                                     evaluation_id=e['id']).values(
+                'evaluation_id', 'evaluation__name', 'marks'
+            )
+            if graded_evaluation:
+                row.append(graded_evaluation[0]['marks'])
+            else:
+                row.append('-')
+        row.extend([student['profilecourse__score'], student['profilecourse__grade']])
+        final_evaluations.append(row)
+
     return render(request, 'professor/students_list.html', {
         'students': students,
         'course_id': id,
-        'evals': evals,
-        'evalIDs': evalIDs,
-        'df': df
+        'evals': total_evaluations,
+        'final_evaluations': final_evaluations
     })
+
+
+def update_student_evaluation(request, course_id, profile_id):
+    try:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            total_evaluations = Evaluation.objects.filter(course_id=course_id).values(
+                'id', 'name', 'max_marks'
+            )
+            final_evaluations = []
+            for e in total_evaluations:
+                graded_evaluation = Marks.objects.filter(course_id=course_id, profile_id=profile_id,
+                                                         evaluation_id=e['id']).values('marks')
+                if graded_evaluation:
+                    marks = graded_evaluation[0]['marks']
+                else:
+                    marks = '-'
+                final_evaluations.append((e['id'], e['name'], marks, e['max_marks']))
+            form = EvaluationEditForm(instance=final_evaluations)
+            if request.method == "POST":
+                form.save(course_id, profile_id, request.POST)
+                messages.success(request, f"Student ID: {profile_id} Evaluations Updated successfully")
+                return JsonResponse({"form_is_valid": True})
+            else:
+                form = EvaluationEditForm(instance=final_evaluations)
+                html_form = render_to_string("professor/student_evaluations_edit_form.html",
+                                             {"course_id": course_id, "profile_id": profile_id,
+                                              "student_evaluations_edit_form": form}, request)
+                return JsonResponse({"html_form": html_form})
+    except Exception as e:
+        messages.error(request, f"Student ID: {profile_id} Evaluations Update failed due to: " + str(e))
+        return JsonResponse({})
 
 
 def evaluations_list(request, id):

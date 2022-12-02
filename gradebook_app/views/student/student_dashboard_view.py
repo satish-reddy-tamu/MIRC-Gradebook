@@ -1,15 +1,9 @@
-import pandas as pd
-from django.contrib import messages
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.template.loader import render_to_string
+from django.db.models import F, Avg, Max, Min, Sum
+from django.shortcuts import render
 
 from gradebook_app.models import Course, ProfileCourse
-from gradebook_app.models import Evaluation
 from gradebook_app.models import Marks
-from gradebook_app.models.common_classes import ProfileType
-from gradebook_app.models.evaluation_model import EvaluationForm, GradeFunctionForm
-from django.db.models import F, Avg, Max, Min, Sum
+from gradebook_app.util.enums_util import ProfileType
 
 
 def student_dashboard(request, profile):
@@ -35,16 +29,16 @@ def view_course_details(request, profile_id, course_id):
         Avg('score'), Max('score'), Min('score')
     )
     evaluations = Marks.objects.filter(profile_id=profile_id, course_id=course_id).annotate(
-        score=F('marks')*F('evaluation__weight'),
-        max_score=F('evaluation__max_marks')*F('evaluation__weight')
+        score=F('marks') * F('evaluation__weight'),
+        max_score=F('evaluation__max_marks') * F('evaluation__weight')
     ).values(
         'marks', 'evaluation_id', 'evaluation__name', 'evaluation__eval_type', 'evaluation__weight',
         'evaluation__max_marks', 'score', 'max_score'
     )
 
     total = Marks.objects.filter(profile_id=profile_id, course_id=course_id).annotate(
-        score=F('marks')*F('evaluation__weight'),
-        max_score=F('evaluation__max_marks')*F('evaluation__weight')
+        score=F('marks') * F('evaluation__weight'),
+        max_score=F('evaluation__max_marks') * F('evaluation__weight')
     ).aggregate(Sum('marks'), Sum('evaluation__max_marks'), Sum('score'), Sum('max_score'))
 
     return render(request, "student/course_dashboard.html", {

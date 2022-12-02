@@ -57,3 +57,19 @@ class Grades(Enum):
     @classmethod
     def get_all_grades(cls):
         return [i.name for i in cls]
+
+
+class EvaluationTypes(Enum):
+    Assignment = "Assignment"
+    Quiz = "Quiz"
+    MidExam = "MidExam"
+    FinalExam = "FinalExam"
+    Miscellaneous = "Miscellaneous"
+
+    @classmethod
+    def choices(cls):
+        return tuple((i.name, i.value) for i in cls)
+
+    @classmethod
+    def get_all_evaluation_types(cls):
+        return [i.name for i in cls]

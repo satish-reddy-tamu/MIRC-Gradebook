@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.contrib import messages
-from gradebook_app.models.profile_model import Profile, ProfileType
+from gradebook_app.models.profile_model import Profile
+from gradebook_app.util.enums_util import ProfileType
 from gradebook_app.views.professor.dashboard_view import professor_dashboard
 from gradebook_app.views.student.student_dashboard_view import student_dashboard
 
