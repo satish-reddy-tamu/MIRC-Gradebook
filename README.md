@@ -26,9 +26,15 @@ The main idea behind this project is to create an analytics-based prediction mod
 * [Iteration1](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i1.tar)
 * [Iteration2](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i2.tar)
 * [Iteration3](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i3.tar)
+* [Iteration4](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i4.tar)
+* [Iteration5](https://github.com/satish-reddy-tamu/MIRC-Gradebook/blob/main/documentation/Fall2022/i5.tar)
 
 ### Setup:
 This project uses Django Framework with python.
 1. Git clone this repo.
 2. pip install -r requirements.txt
 3. python manage.py runserver -> to start the server locally.
+
+### Diagrams
+![Final Er Diagram](documentation/diagrams/final_ER_diagram.png)
+![Final Design Diagram](documentation/diagrams/final_design_diagram.png)

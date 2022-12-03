@@ -14,27 +14,34 @@
     </li>
 {% endblock %}
 {% block content %}
-    <br>
-    <div class="col-md-12">
+    {%include 'professor/student_evaluations_upload_form.html'  %}
+    <div style="padding: 20px;" class="col-md-12">
+        <a id="add_bulk_evals_btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#student_evaluations_upload_popup">
+            Add Bulk Evaluations
+        </a>
+        <div id="student_evaluations_edit_div"></div>
         <div class="table-responsive">
             <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
                 <thead>
                 <th>Student ID</th>
                 <th>Student First Name</th>
                 {% for eval in evals %}
-                    <th>{{eval.name}}</th>
+                    <th>{{eval.name}} ({{ eval.max_marks }})</th>
                 {% endfor %}
+                <th>Score</th>
+                <th>Grade</th>
+                <th>Edit</th>>
                 </thead>
                 <tbody>
-                {% for student in students %}
+                {% for eval in final_evaluations %}
                     <tr>
-                        <td>{{ student.id }}</td>
-                        <td>{{ student.first_name }}</td>
-                        {% for evalID in evalIDs %}
-                            <td>100</td>
+                        {% for e in eval %}
+                            <td>{{ e }}</td>
                         {% endfor %}
+                        <td><a id="update_eval_btn" href="/professor/course/{{ course_id }}/students/{{ eval.0 }}/update" class="btn btn-primary"><i class="bi bi-pencil"></i></a></td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
             </table>
         </div>

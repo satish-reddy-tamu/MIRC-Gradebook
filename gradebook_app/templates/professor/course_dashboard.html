@@ -1,0 +1,329 @@
+{% extends "common/base.html" %}
+
+ {% block head_css  %}
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js'></script>
+
+ <script>
+     $(document).ready(function() {
+         var ctx = $("#chart-line");
+         var myLineChart = new Chart(ctx, {
+             type: 'pie',
+             data: {
+                 labels: [{%for data in grades%}'{{data}}',{%endfor%}],
+                 datasets: [{
+                     data: [{%for cnt in numbers%}{{cnt}},{%endfor%}],
+                     backgroundColor: ["rgba(255, 0, 0, 0.5)", "rgba(100, 255, 0, 0.5)", "rgba(200, 50, 255, 0.5)", "rgba(0, 100, 255, 0.5)", "rgba(0, 100, 255, 0.5)", "rgba(0, 100, 255, 0.5)"],
+                 }],
+             },
+             options: {
+                 title: {
+                     display: true,
+                     text: 'Grades'
+                 }
+             }
+         });
+     });
+ </script> 
+    <link rel="stylesheet" type="text/css" href="../../../static/css/professor/course_dashboard.css"/>
+
+ {% endblock %}
+
+ {% block nav_links %}
+ <li class="nav-item">
+     <a class="nav-link" href="/">Home</a>
+ </li>
+ <li class="nav-item">
+     <a class="nav-link" href="/professor/course/{{ course_id }}/students">Students</a>
+ </li>
+ <li class="nav-item">
+     <a class="nav-link" href="/professor/course/{{ course_id }}/evaluations">Evaluations</a>
+ </li>
+ <li class="nav-item">
+     <a class="nav-link" href="/accounts/logout">Logout</a>
+ </li>
+{% endblock %}
+
+{%block content  %}
+    <div class="indi-course-dash">
+
+
+		<div class="indi-course-dash-body-main-content">
+			<section class="service-section">
+				<h2>{{ course.name}}</h2>
+
+
+				<div class="tiles">
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Mean Score</span>
+								<span>{{score__avg}}</span>
+							</h3>
+						</div>
+
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Max Score</span>
+								<span>{{score__max}}</span>
+							</h3>
+						</div>
+					</article>
+
+					<article class="tile">
+						<div class="tile-header">
+							<h3>
+								<span>Min Score</span>
+								<span>{{score__min}}</span>
+							</h3>
+						</div>
+					</article>
+                </div>
+
+
+
+				<div class="service-section-footer">
+					<p></p>
+				</div>
+
+			</section>
+			<section class="transfer-section">
+				<div class="transfer-section-header">
+					<h2>Top Students</h2>
+				</div>
+				<div class="transfers">
+
+					<div class="transfer">
+
+						<dl class="transfer-details-head">
+							<div>
+								<dt>Name</dt>
+							</div>
+							<div>
+								<dt>Email</dt>
+
+							</div>
+							<div>
+								<dt>Score</dt>
+							</div>
+						</dl>
+
+					</div>
+
+                    {% for student in top_students %}
+					<div class="transfer">
+
+						<dl class="transfer-details">
+							<div>
+								<dt>{{student.profile__first_name}}</dt>
+                                
+							</div>		
+						</dl>
+
+                        <dl class="transfer-details">
+							<div>
+								
+                                <dt>{{student.profile__email}}</dt>
+                                
+							</div>		
+						</dl>
+
+                        <dl class="transfer-details">
+							<div>
+                                <dt>{{student.score}}</dt>
+							</div>		
+						</dl>
+
+
+
+					</div>
+                    {% endfor %}
+
+
+                </div>
+
+			</section>
+
+            <section class="transfer-section">
+				<div class="transfer-section-header">
+					<h2>Bottom Students</h2>
+				</div>
+				<div class="transfers">
+
+					<div class="transfer">
+
+						<dl class="transfer-details-head">
+							<div>
+								<dt>Name</dt>
+							</div>
+							<div>
+								<dt>Email</dt>
+
+							</div>
+							<div>
+								<dt>Score</dt>
+							</div>
+						</dl>
+
+					</div>
+
+                    {% for student in bottom_students %}
+					<div class="transfer">
+
+						<dl class="transfer-details">
+							<div>
+								<dt>{{student.profile__first_name}}</dt>
+                                
+							</div>		
+						</dl>
+                        <dl class="transfer-details">
+							<div>
+								
+                                <dt>{{student.profile__email}}</dt>
+                                
+							</div>		
+						</dl>
+                        <dl class="transfer-details">
+							<div>
+							    <dt>{{student.score}}</dt>
+							</div>		
+						</dl>
+
+					</div>
+                    {% endfor %}
+
+
+                </div>
+
+			</section>
+
+            <section class="transfer-section">
+				<div class="transfer-grade-header">
+					<h2>Grade Distribution</h2>
+				</div>
+				<div class="transfers">
+
+					<div class="transfer-grade">
+
+						<dl class="transfer-grade-head">
+							<div>
+								<dt>Grades</dt>
+							</div>
+							<div>
+								<dt>Count</dt>
+
+							</div>
+						</dl>
+
+					</div>
+
+                    {% for grade in grade_distribution %}
+					<div class="transfer-grade">
+
+						<dl class="transfer-grade-details">
+							<div>
+								<dt>{{grade.grade}}</dt>
+                                
+							</div>		
+						</dl>
+                        <dl class="transfer-grade-details">
+							<div>
+								
+                                <dt>{{grade.count}}</dt>
+                                
+							</div>		
+						</dl>
+                        
+					</div>
+                    {% endfor %}
+
+
+                </div>
+
+			</section>
+
+
+		</div>
+
+	
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row">
+                <div class="container-fluid d-flex justify-content-center">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="card">
+                            
+                            <div class="card-body" style="height: 500px">
+                                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                                    </div>
+                                </div> <canvas id="chart-line" width="299" height="200" class="chartjs-render-monitor" style="display: block; width: 299px; height: 200px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="service-section-thres">
+                    <h2> Grading Criteria</h2>
+
+
+                    <div class="tiles-thres">
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> 100 > A > {{ thresholds.0 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.0 }} > B > {{ thresholds.1 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.1 }} > C > {{ thresholds.2 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.2 }} > D > {{ thresholds.3 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.3 }} > E > {{ thresholds.4 }}</span>
+                                </h3>
+                            </div>
+                        </article>
+                        <article class="tile-thres">
+                            <div class="tile-header-thres">
+                                <h3>
+                                    <span> {{ thresholds.4 }} > F > 0</span>
+                                </h3>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+
+                </section>
+</div>
+</div>
+{% endblock %}

@@ -1,56 +1,51 @@
 {% extends 'common/base.html' %}
 {% block nav_links %}
     <li class="nav-item">
-        <a class="nav-link" href="/admin/courses">COURSES</a>
+        <a class="nav-link" href="/admin/courses">Courses</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/admin/profiles">PROFILES</a>
+        <a class="nav-link" href="/admin/profiles">Profiles</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/accounts/logout">LOGOUT</a>
+        <a class="nav-link" href="/accounts/logout">Logout</a>
     </li>
 {% endblock %}
 
 
 {% block content %}
-    {% include 'admin/add_course.html' %}
-    {% include 'admin/assign_course_to_profile.html' %}
-    <div class="col-md-12">
-        <br>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_course_popup">
+    <div style="padding: 20px;" class="col-md-12">
+        <button href="{% url 'add_course' %}" id="add_course_btn" type="button" class="btn btn-primary">
             Add Course
         </button>
-        <br><br>
+        <div id="course_div"></div>
+        <br>
         <div class="table-responsive">
             <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
                 <thead>
-                <th><input type="checkbox" id="checkall"/></th>
                 <th>ID</th>
                 <th>Course ID</th>
                 <th>Course Name</th>
                 <th>Department</th>
-                <th>Description</th>
                 <th>Year</th>
                 <th>Semester</th>
                 <th>Credits</th>
                 <th>Edit</th>
                 <th>Delete</th>
+                <th>Enroll</th>
                 </thead>
                 <tbody>
                 {% for course in courses %}
                     <tr>
-                        <td><input type="checkbox" class="checkthis"/></td>
                         <td>{{ course.id }}</td>
                         <td>{{ course.course_code }}</td>
                         <td>{{ course.name }}</td>
                         <td>{{ course.department }}</td>
-                        <td>{{ course.description }}</td>
                         <td>{{ course.year }}</td>
                         <td>{{ course.semester }}</td>
                         <td>{{ course.credits }}</td>
-                        <td><a href="/admin/courses/update/{{ course.id }}" class="btn btn-primary">Edit</a></td>
-                        <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger">Delete</a></td>
-                        <td><a href="/admin/courses/enroll/{{ course.id }}" class="btn btn-primary">Enroll profiles</a></td>
+                        <td><a id="update_course_btn" href="/admin/courses/update/{{ course.id }}" class="btn btn-primary"><i class="bi bi-pencil"></i></a></td>
+                        <td><a href="/admin/courses/delete/{{ course.id }}" class="btn btn-danger"><i class="bi bi-trash3"></i></a></td>
+                        <td><a id="enroll_profiles_btn" href="/admin/courses/enroll/{{ course.id }}" class="btn btn-primary"><i class="bi bi-person-plus"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
