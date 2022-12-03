@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from gradebook_app.forms.evaluation_form import EvaluationForm
 from gradebook_app.forms.grade_function_form import GradeFunctionForm
 from gradebook_app.forms.student_evaluations_edit_form import EvaluationEditForm
+from gradebook_app.forms.student_evaluations_upload_form import EvaluationsUploadForm
 from gradebook_app.models import Course
 from gradebook_app.models import Evaluation
 from gradebook_app.models import Marks
@@ -36,7 +37,10 @@ def view_course_details(request, id):
         grades.append(query['grade'])
         numbers.append(query['count'])
     for key, value in y.items():
-        y[key] = round(value, 2)
+        if value:
+            y[key] = round(value, 2)
+        else:
+            y[key] = 0.0
     return render(request, 'professor/course_dashboard.html', {
 
         'course_id': id,
@@ -70,12 +74,15 @@ def view_students_list(request, id):
                 row.append('-')
         row.extend([student['profilecourse__score'], student['profilecourse__grade']])
         final_evaluations.append(row)
-
+    eval_choices = []
+    for eval in total_evaluations:
+        eval_choices.append((eval['id'], eval['name']))
     return render(request, 'professor/students_list.html', {
         'students': students,
         'course_id': id,
         'evals': total_evaluations,
-        'final_evaluations': final_evaluations
+        'final_evaluations': final_evaluations,
+        'student_evaluations_upload_form':  EvaluationsUploadForm(evaluations=eval_choices)
     })
 
 
@@ -102,7 +109,7 @@ def update_student_evaluation(request, course_id, profile_id):
             else:
                 form = EvaluationEditForm(instance=final_evaluations)
                 html_form = render_to_string("professor/student_evaluations_edit_form.html",
-                                             {"course_id": course_id, "profile_id": profile_id,
+                                             {"course_id": course_id, "profile_id": profile_id, "edit": True,
                                               "student_evaluations_edit_form": form}, request)
                 return JsonResponse({"html_form": html_form})
     except Exception as e:
@@ -274,3 +281,14 @@ def add_grade_function(request, id):
     except Exception as e:
         messages.error(request, "Grade Function Addition failed due to: " + str(e))
         return JsonResponse({})
+
+
+def add_bulk_evaluations(request, id):
+    try:
+        form = EvaluationsUploadForm(request.POST, request.FILES)
+        if request.method == "POST":
+            form.save(id, request.POST, request.FILES)
+    except Exception as e:
+        messages.error(request, "GEvaluations Upload failed due to: " + str(e))
+    finally:
+        return redirect(view_students_list, id=id)

@@ -14,5 +14,8 @@ class Evaluation(models.Model):
     weight = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(1.0)])
     max_marks = models.FloatField()
 
+    def __str__(self):
+        return self.name
+
 
 
