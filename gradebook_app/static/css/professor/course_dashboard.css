@@ -318,10 +318,10 @@ a {
 	flex-direction: column;
 	min-width: 0;
 	word-wrap: break-word;
-	background-color: #fff;
 	background-clip: border-box;
 	border: 1px solid rgba(19, 24, 44, .125);
-	border-radius: .25rem
+	border-radius: .25rem;
+	background-color: var(--c-gray-800);
 }
 
 .card-header {
