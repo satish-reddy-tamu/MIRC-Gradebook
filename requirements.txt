@@ -28,3 +28,5 @@ sqlparse==0.4.3
 types-cryptography==3.3.23
 urllib3==1.26.12
 whitenoise==6.2.0
+gunicorn==20.1.0
+dj-config-url==0.1.1
