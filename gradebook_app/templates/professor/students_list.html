@@ -14,9 +14,13 @@
     </li>
 {% endblock %}
 {% block content %}
+    {% include 'professor/add_bulk_scores.html' %}
     <div id="student_evaluations_edit_div"></div>
     <div style="padding: 20px" class="col-md-12">
-        <div class="table-responsive">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_bulk_scores_popup">
+            Add Bulk Scores
+        </button>
+        <div class="table-responsive">        
             <table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
                 <thead>
                 <th>Student ID</th>

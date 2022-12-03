@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.db.models import Avg, Max, Min, Count
 from django.http import JsonResponse
+from io import TextIOWrapper
+from csv import DictReader
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
@@ -78,6 +80,33 @@ def view_students_list(request, id):
         'final_evaluations': final_evaluations
     })
 
+def add_bulk_scores(request, id, eval_id):
+    try:
+        scores_csv_file = TextIOWrapper(request.FILES['scores_csv_file'], encoding=request.encoding)
+        marks_list = []
+        for row in DictReader(scores_csv_file):
+            # profile = Profile(
+            #     email=row['email'],
+            #     first_name=Profile.objects.filter(email = row['email']).values('first_name'),
+            #     last_name=Profile.objects.filter(email = row['email']).values('last_name'),
+            #     department=Profile.objects.filter(email = row['email']).values('department'),
+            #     phone=Profile.objects.filter(email = row['email']).values('phone'),
+            #     type=Profile.objects.filter(email = row['email']).values('type')
+            # )
+            profile = Profile.objects.filter(email = row['email'])
+            course = Course.objects.filter(course_id = id)
+            ev = Evaluation.objects.filter(id = eval_id)
+            mark = Marks(profile = profile,
+                            course = course,
+                            evaluation = ev,
+                            marks = row['marks'])
+            marks_list.append(mark)
+        Marks.objects.bulk_create(marks_list)
+        messages.success(request, "Bulk Scores Inserted Successfully")
+    except Exception as e:
+        messages.error(request, "Bulk Scores Insertion failed due to: " + str(e))
+    finally:
+        return redirect(view_students_list)
 
 def update_student_evaluation(request, course_id, profile_id):
     try:

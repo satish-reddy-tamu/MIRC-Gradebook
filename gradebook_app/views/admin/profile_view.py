@@ -66,6 +66,8 @@ def add_bulk_profiles(request):
         return redirect(display_all_profiles)
 
 
+
+
 def update_profile(request, id):
     try:
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
