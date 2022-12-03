@@ -1,5 +1,13 @@
-def calculate_normalized_score(score, min_score, max_score):
-    return round((score - min_score) / (max_score - min_score) * 100, 2)
+def calculate_normalized_score(marks, max_marks, weights, total_weight, rnd=True):
+    norm_score = 0
+    if isinstance(marks, list):
+        for mark, max_mark, weight in zip(marks, max_marks, weights):
+            norm_score += (mark / max_mark) * (weight / total_weight)
+    else:
+        norm_score = (marks / max_marks) * (weights / total_weight)
+    if rnd:
+        return round(norm_score * 100, 2)
+    return norm_score * 100
 
 
 def calculate_grade(score, thresholds):

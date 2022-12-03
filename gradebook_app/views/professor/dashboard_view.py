@@ -41,15 +41,17 @@ def view_course_details(request, id):
             y[key] = round(value, 2)
         else:
             y[key] = 0.0
+    course = Course.objects.filter(id=id).values('name', 'thresholds')
+    thresholds = course[0].get('thresholds').split(',')
     return render(request, 'professor/course_dashboard.html', {
-
         'course_id': id,
         **y,
         'top_students': top_students,
         'bottom_students': bottom_students,
         'grade_distribution': d,
         'grades': grades,
-        'numbers': numbers
+        'numbers': numbers,
+        'thresholds': thresholds
     })
 
 

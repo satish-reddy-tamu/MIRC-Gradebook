@@ -30,18 +30,20 @@ class EvaluationsUploadForm(forms.Form):
             if not update_success:
                 Marks(profile_id=profile_id, course_id=course_id, evaluation_id=current_eval_id, marks=marks).save()
 
-            weighted_score = 0
-            max_score = 0
+            weights_list = []
+            marks_list = []
+            max_marks_list = []
             for eval in total_eval_objs:
                 current_eval_marks = Marks.objects.filter(profile_id=profile_id,
                                                           course_id=course_id,
                                                           evaluation_id=eval.id).values('marks')
                 if current_eval_marks:
-                    weighted_score += eval.weight * current_eval_marks[0]['marks']
-                    max_score += eval.weight * eval.max_marks
+                    weights_list.append(eval.weight)
+                    marks_list.append(current_eval_marks[0]['marks'])
+                    max_marks_list.append(eval.max_marks)
 
             thresholds = course[0].thresholds
-            score = calculate_normalized_score(weighted_score, 0, max_score)
+            score = calculate_normalized_score(marks_list, max_marks_list, weights_list, sum(weights_list))
             grade = calculate_grade(score, thresholds)
             ProfileCourse.objects.filter(profile_id=profile_id, course_id=course_id).update(
                 score=score,

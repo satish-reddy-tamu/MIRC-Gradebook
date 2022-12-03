@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from gradebook_app.models.profile_model import Profile, ProfileForm
+from gradebook_app.models.profile_model import Profile
+
 
 class TestProfileViews(TestCase):
     def test_display_all_profiles(self):
