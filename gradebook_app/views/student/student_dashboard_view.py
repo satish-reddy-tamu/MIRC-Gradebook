@@ -4,6 +4,7 @@ from django.shortcuts import render
 from gradebook_app.models import Course, ProfileCourse
 from gradebook_app.models import Marks
 from gradebook_app.util.enums_util import ProfileType
+from gradebook_app.util.marks_util import calculate_normalized_score
 
 
 def student_dashboard(request, profile):
@@ -28,17 +29,21 @@ def view_course_details(request, profile_id, course_id):
     stats = ProfileCourse.objects.filter(course_id=course_id, profile__type=ProfileType.STUDENT.value).aggregate(
         Avg('score'), Max('score'), Min('score')
     )
+
+    weight_total = Marks.objects.filter(profile_id=profile_id,course_id=course_id).aggregate(Sum('evaluation__weight'))
+
+
     evaluations = Marks.objects.filter(profile_id=profile_id, course_id=course_id).annotate(
-        score=F('marks') * F('evaluation__weight'),
-        max_score=F('evaluation__max_marks') * F('evaluation__weight')
+        score=calculate_normalized_score(F('marks'), 0, F('evaluation__max_marks')) * (F('evaluation__weight')/weight_total['evaluation__weight__sum']),
+        max_score= 100 * (F('evaluation__weight')/weight_total['evaluation__weight__sum'])
     ).values(
         'marks', 'evaluation_id', 'evaluation__name', 'evaluation__eval_type', 'evaluation__weight',
         'evaluation__max_marks', 'score', 'max_score'
     )
 
     total = Marks.objects.filter(profile_id=profile_id, course_id=course_id).annotate(
-        score=F('marks') * F('evaluation__weight'),
-        max_score=F('evaluation__max_marks') * F('evaluation__weight')
+        score=calculate_normalized_score(F('marks'), 0, F('evaluation__max_marks')) * (F('evaluation__weight') / weight_total['evaluation__weight__sum']),
+        max_score=100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'])
     ).aggregate(Sum('marks'), Sum('evaluation__max_marks'), Sum('score'), Sum('max_score'))
 
     return render(request, "student/course_dashboard.html", {

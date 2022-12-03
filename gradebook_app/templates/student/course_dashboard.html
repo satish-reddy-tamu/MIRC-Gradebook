@@ -29,7 +29,7 @@
 						<div class="tile-header">
 							<h3>
 								<span>Your Current Score</span>
-								<span>{{ score_grade.0.score }}</span>
+								<span>{{ score_grade.0.score|floatformat:2 }}</span>
 							</h3>
 						</div>
                     </article>
@@ -46,7 +46,7 @@
 						<div class="tile-header">
 							<h3>
 								<span>Class Mean Score</span>
-								<span>{{ stats.score__avg }}</span>
+								<span>{{ stats.score__avg|floatformat:2 }}</span>
 							</h3>
 						</div>
 
@@ -56,7 +56,7 @@
 						<div class="tile-header">
 							<h3>
 								<span>Class Max Score</span>
-								<span>{{ stats.score__max }}</span>
+								<span>{{ stats.score__max|floatformat:2 }}</span>
 							</h3>
 						</div>
 					</article>
@@ -65,7 +65,7 @@
 						<div class="tile-header">
 							<h3>
 								<span>Class Min Score</span>
-								<span>{{ stats.score__min }}</span>
+								<span>{{ stats.score__min|floatformat:2 }}</span>
 							</h3>
 						</div>
 					</article>
@@ -111,12 +111,12 @@
 								<dd>Weight : {{ eval.evaluation__weight }}</dd>
 							</div>
 							<div>
-								<dt>{{ eval.marks }}</dt>
-								<dd>/{{ eval.evaluation__max_marks }}</dd>
+								<dt>{{ eval.marks|floatformat:2 }}</dt>
+								<dd>/{{ eval.evaluation__max_marks|floatformat:2 }}</dd>
 							</div>
 							<div>
-								<dt>{{ eval.score }}</dt>
-								<dd>/{{ eval.max_score }}</dd>
+								<dt>{{ eval.score|floatformat:2 }}</dt>
+								<dd>/{{ eval.max_score|floatformat:2 }}</dd>
 							</div>
 						</dl>
 
@@ -130,12 +130,12 @@
                                     <dt>Total</dt>
                                 </div>
                                 <div>
-                                    <dt>{{ total.marks__sum }}</dt>
-                                    <dd>/{{ total.evaluation__max_marks__sum }}</dd>
+                                    <dt>{{ total.marks__sum|floatformat:2 }}</dt>
+                                    <dd>/{{ total.evaluation__max_marks__sum|floatformat:2 }}</dd>
                                 </div>
                                 <div>
-                                    <dt>{{ total.score__sum }}</dt>
-                                    <dd>/{{ total.max_score__sum }}</dd>
+                                    <dt>{{ total.score__sum|floatformat:2 }}</dt>
+                                    <dd>/{{ total.max_score__sum|floatformat:2 }}</dd>
                                 </div>
                             </dl>
 

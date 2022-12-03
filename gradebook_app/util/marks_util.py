@@ -1,5 +1,8 @@
 def calculate_normalized_score(score, min_score, max_score):
-    return round((score - min_score) / (max_score - min_score) * 100, 2)
+    return (score - min_score) / (max_score - min_score) * 100
+
+
+
 
 
 def calculate_grade(score, thresholds):
