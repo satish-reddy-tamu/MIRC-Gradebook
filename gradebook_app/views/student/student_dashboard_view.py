@@ -1,4 +1,5 @@
 from django.db.models import F, Avg, Max, Min, Sum
+from django.db.models.functions import Round
 from django.shortcuts import render
 
 from gradebook_app.models import Course, ProfileCourse
@@ -27,7 +28,7 @@ def view_course_details(request, profile_id, course_id):
 
     score_grade = ProfileCourse.objects.filter(profile_id=profile_id, course_id=course_id).values('score', 'grade')
     stats = ProfileCourse.objects.filter(course_id=course_id, profile__type=ProfileType.STUDENT.value).aggregate(
-        Avg('score'), Max('score'), Min('score')
+        Round(Avg('score'), 2), Round(Max('score'), 2), Round(Min('score'), 2)
     )
 
     weight_total = Marks.objects.filter(profile_id=profile_id, course_id=course_id).aggregate(Sum('evaluation__weight'))
@@ -37,7 +38,7 @@ def view_course_details(request, profile_id, course_id):
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
                                          weight_total['evaluation__weight__sum'], rnd=False),
-        max_score=100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'])
+        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'], 2))
     ).values(
         'marks', 'evaluation_id', 'evaluation__name', 'evaluation__eval_type', 'evaluation__weight',
         'evaluation__max_marks', 'score', 'max_score'
@@ -48,7 +49,7 @@ def view_course_details(request, profile_id, course_id):
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
                                          weight_total['evaluation__weight__sum'], rnd=False),
-        max_score=100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'])
+        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'], 2))
     ).aggregate(Sum('marks'), Sum('evaluation__max_marks'), Sum('score'), Sum('max_score'))
 
     return render(request, "student/course_dashboard.html", {
