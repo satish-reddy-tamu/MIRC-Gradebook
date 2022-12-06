@@ -28,8 +28,13 @@ def view_course_details(request, profile_id, course_id):
 
     score_grade = ProfileCourse.objects.filter(profile_id=profile_id, course_id=course_id).values('score', 'grade')
     stats = ProfileCourse.objects.filter(course_id=course_id, profile__type=ProfileType.STUDENT.value).aggregate(
-        Round(Avg('score'), 2), Round(Max('score'), 2), Round(Min('score'), 2)
+        Avg('score'), Max('score'), Min('score')
     )
+    for key, value in stats.items():
+        if value is not None:
+            stats[key] = round(value, 2)
+        else:
+            stats[key] = value
 
     weight_total = Marks.objects.filter(profile_id=profile_id, course_id=course_id).aggregate(Sum('evaluation__weight'))
 
@@ -38,7 +43,7 @@ def view_course_details(request, profile_id, course_id):
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
                                          weight_total['evaluation__weight__sum'], rnd=False),
-        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'], 2))
+        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum']), 2)
     ).values(
         'marks', 'evaluation_id', 'evaluation__name', 'evaluation__eval_type', 'evaluation__weight',
         'evaluation__max_marks', 'score', 'max_score'
@@ -49,7 +54,7 @@ def view_course_details(request, profile_id, course_id):
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
                                          weight_total['evaluation__weight__sum'], rnd=False),
-        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'], 2))
+        max_score=Round(100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum']), 2)
     ).aggregate(Sum('marks'), Sum('evaluation__max_marks'), Sum('score'), Sum('max_score'))
 
     return render(request, "student/course_dashboard.html", {
