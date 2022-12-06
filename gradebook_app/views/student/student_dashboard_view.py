@@ -36,7 +36,7 @@ def view_course_details(request, profile_id, course_id):
         score=calculate_normalized_score(F('marks'),
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
-                                         weight_total['evaluation__weight__sum'], rnd=True),
+                                         weight_total['evaluation__weight__sum'], rnd=False),
         max_score=100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'])
     ).values(
         'marks', 'evaluation_id', 'evaluation__name', 'evaluation__eval_type', 'evaluation__weight',
@@ -47,7 +47,7 @@ def view_course_details(request, profile_id, course_id):
         score=calculate_normalized_score(F('marks'),
                                          F('evaluation__max_marks'),
                                          F('evaluation__weight'),
-                                         weight_total['evaluation__weight__sum'], rnd=True),
+                                         weight_total['evaluation__weight__sum'], rnd=False),
         max_score=100 * (F('evaluation__weight') / weight_total['evaluation__weight__sum'])
     ).aggregate(Sum('marks'), Sum('evaluation__max_marks'), Sum('score'), Sum('max_score'))
 
