@@ -4,7 +4,7 @@ from django.urls import reverse
 from gradebook_app.models.course_model import Course
 
 
-class TestProfileViews(TestCase):
+class TestProfessorViews(TestCase):
     def test_view_course_details(self):
         response = self.client.get(reverse('view_course_details', args=[1]))
         self.assertEquals(response.status_code, 200)
@@ -64,7 +64,7 @@ class TestProfileViews(TestCase):
     def test_post_add_evaluation_valid_form(self):
         evaluations = {"eval1": {'name': "abc", 'eval_type': "type", 'weight': 0.5, 'max_marks': 50.0},
                        "eval2": {'name': "abc2", 'eval_type': "type2", 'weight': 0.5, 'max_marks': 50.0}}
-        obj = {'name': "abc", 'eval_type': "type", 'weight': 0.5, 'max_marks': 50.0}
+        obj = {'name': "abc", 'eval_type': "Quiz", 'weight': 0.5, 'max_marks': 50.0}
         Course.objects.create(course_code="313", name="student", description="description", department="CSCE",
                               year=2023, semester="Fall", credits="3")
         session = self.client.session
@@ -103,7 +103,7 @@ class TestProfileViews(TestCase):
     def test_post_update_evaluation_valid_form(self):
         evaluations = {"1": {'name': "abc", 'eval_type': "type", 'weight': 0.5, 'max_marks': 50.0},
                        "eval2": {'name': "abc2", 'eval_type': "type2", 'weight': 0.5, 'max_marks': 50.0}}
-        obj = {'name': "abc", 'eval_type': "type", 'weight': 0.5, 'max_marks': 50.0}
+        obj = {'name': "abc", 'eval_type': "FinalExam", 'weight': 0.5, 'max_marks': 50.0}
         Course.objects.create(course_code="313", name="student", description="description", department="CSCE",
                               year=2023, semester="Fall", credits=3)
         session = self.client.session
