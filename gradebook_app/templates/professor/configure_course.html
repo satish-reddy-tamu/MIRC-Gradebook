@@ -48,9 +48,9 @@
                         <td>{{ evaluation.max_marks }}</td>
                         <td><a id="update_evaluation_btn"
                                href="/professor/course/{{ course_id }}/evaluations/update/{{ evaluation.id }}"
-                               class="btn btn-primary"><i class="bi bi-pencil"></a></td>
+                               class="btn btn-primary"><i class="bi bi-pencil"></i></a></td>
                         <td><a href="/professor/course/{{ course_id }}/evaluations/delete/{{ evaluation.id }}"
-                               class="btn btn-danger"><i class="bi bi-trash3"</a></td>
+                               class="btn btn-danger"><i class="bi bi-trash3"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -70,5 +70,7 @@
                 disabled>Submit
         </button>
     {% endif %}
-
+    <br>
+    <br>
+    <i style="margin-left: 20px; color: red"> INFO: Please make sure to have sum of weights equal to 1 and Add Grade function to enable submit button.</i>
 {% endblock %}
