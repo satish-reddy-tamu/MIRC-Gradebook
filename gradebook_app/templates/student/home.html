@@ -52,8 +52,11 @@
                                     <div class="parameter">current score</div>
                                 </div>
                                 <div class="course-score">
-
-                                    <div class="score">A</div>
+                                    {% if course.grade %}
+                                        <div class="score">{{ course.grade }}</div>
+                                    {% else %}
+                                        <div class="score">-</div>
+                                    {% endif %}
                                     <div class="parameter">current grade</div>
                                 </div>
 {#                                <div class="course-stats">#}
